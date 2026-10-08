@@ -9,7 +9,7 @@ In **Settings → Rules → Rulesets**, create an active branch ruleset targetin
 - Require a pull request before merging, with at least one approval.
 - Require review from Code Owners and dismiss stale approvals after new commits.
 - Require all review conversations to be resolved.
-- Require these status checks: `CI / quality`, `CI / msrv`, `CI / platform (ubuntu-latest)`, `CI / platform (macos-latest)`, `CI / platform (windows-latest)`, `CI / commitlint`, `CI / semver`, and `CodeQL / analyze`. Also require `Dependency review / review` when the repository is public or GitHub Advanced Security is enabled; GitHub skips that job for private repositories without GHAS.
+- Require these status checks: `CI / quality`, `CI / msrv`, `CI / platform (ubuntu-latest)`, `CI / platform (macos-latest)`, `CI / platform (windows-latest)`, `CI / commitlint`, and `CI / semver`. Also require `CodeQL / analyze` and `Dependency review / review` when the repository is public or private-repository Code Security is enabled with `CODE_SECURITY_ENABLED=true`; both jobs skip otherwise.
 - Require branches to be up to date before merging.
 - Require linear history; block force pushes and branch deletion.
 - Do not allow bypasses except for a documented break-glass administrator.
@@ -31,10 +31,10 @@ The release-plz workflow uses a GitHub App token so release PRs run CI and relea
 
 ## Security features and action policy
 
-In **Settings → Code security and analysis**, enable Dependabot alerts, Dependabot security updates, secret scanning, and push protection. Availability depends on repository visibility and the organization's GitHub plan; verify the features show as enabled.
+In **Settings → Code security and analysis**, enable Code Security, Dependabot alerts, Dependabot security updates, secret scanning, and push protection where available. For a private repository, set the repository Actions variable `CODE_SECURITY_ENABLED=true` under **Settings → Secrets and variables → Actions → Variables** only after Code Security is enabled. This enables the CodeQL and dependency review jobs. Availability depends on repository visibility and the organization's GitHub plan; verify the features show as enabled.
 
 Enable Discussions in **Settings → General → Features** if the issue-form contact link should route questions there.
 
 In **Settings → Actions → General**, restrict allowed actions to trusted publishers and require actions to be pinned to full-length commit SHAs. Dependabot checks the pinned action references weekly.
 
-If the repository is private, confirm the GitHub plan supports Dependency Review and artifact attestations. The dependency review job is skipped without GHAS; enable the required plan before making it a required status check. Artifact attestations are skipped for private repositories unless the plan supports them.
+If the repository is private, confirm the GitHub plan supports Code Security, Dependency Review, and artifact attestations. Without Code Security, CodeQL and dependency review are skipped; enable the feature and set `CODE_SECURITY_ENABLED=true` before requiring their checks. Artifact attestations are skipped for private repositories unless the plan supports them.

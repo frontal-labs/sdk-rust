@@ -18,6 +18,7 @@ concurrency:
 jobs:
   analyze:
     name: analyze
+    if: ${{ !github.event.repository.private || vars.CODE_SECURITY_ENABLED == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
