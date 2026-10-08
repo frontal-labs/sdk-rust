@@ -57,8 +57,8 @@ futures-util = { version = "0.3", default-features = false, features = ["std"], 
 hyper-rustls = { version = "=0.27.7", default-features = false }
 hyper-util = "=0.1.20"
 httpdate = "1"
-idna = "=1.0.3"
-indexmap = "=2.7.1"
+idna = "=1.1.0"
+indexmap = "=2.11.4"
 percent-encoding = "2"
 reqwest = { version = "0.12", features = ["json", "multipart", "rustls-tls", "stream"], default-features = false }
 serde = { version = "1", features = ["derive"] }
@@ -66,12 +66,12 @@ serde_json = "1"
 thiserror = "2"
 tokio = { version = "1", features = ["time"] }
 tracing = "0.1"
-url = "=2.5.4"
+url = "=2.5.8"
 zeroize = "=1.8.2"
 
 [dev-dependencies]
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
-wiremock = "=0.6.1"
+wiremock = "=0.6.5"
 
 [lints.rust]
 unsafe_code = "forbid"
