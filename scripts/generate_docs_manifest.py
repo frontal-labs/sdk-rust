@@ -13,7 +13,7 @@ paths = sorted(
     and p.name != "PLAN.md"
 )
 documents = [{"path": p.relative_to(ROOT).as_posix(), "title": p.stem.replace("_", " ")} for p in paths]
-manifest = {"name": "Frontal Rust SDK", "language": "Rust", "version": "0.1.0", "status": "scaffold", "documents": documents}
+manifest = {"name": "Frontal Rust SDK", "language": "Rust", "version": "1.0.0", "status": "implementation", "documents": documents}
 content = json.dumps(manifest, indent=2) + "\n"
 (ROOT / "docs/mcp.json").write_text(content, encoding="utf-8")
 (ROOT / "mcp.json").write_text(content, encoding="utf-8")

@@ -1,16 +1,16 @@
 ---
 name: frontal-sdk-rust
-description: Guidance for adding or reviewing integrations using the Frontal Rust SDK.
+description: Guidance for building and reviewing integrations using the Frontal Rust SDK.
 ---
 
 # Frontal Rust SDK
 
-This repository is a scaffold. Check the matching module under `src/resources/` and its models under `src/models/` before using an operation; an endpoint in `contracts/` does not guarantee a public method exists. Follow the idioms and toolchain documented in this repository.
+Use the published `frontal` crate. Create one `Frontal` client and access services through its feature-gated handles. The handles share one transport and use caller-defined Serde request and response types.
 
 ## Configuration
 
-The client configuration will use `FRONTAL_API_KEY` (`frt_...`) and `FRONTAL_API_URL` (default `https://api.frontal.dev/v1`) when implemented. See the root `.env.example`; Rust does not load `.env` files automatically.
+`Frontal::from_env()` reads `FRONTAL_API_KEY`, `FRONTAL_API_URL` (default `https://api.frontal.dev/v1`), `FRONTAL_ENV`, and `FRONTAL_DEBUG`. Use `Frontal::builder(api_key)` for explicit configuration. Rust does not load `.env` files automatically.
 
-## Modules
+## Contracts and services
 
-See [the architecture guide](../../docs/ARCHITECTURE.md) and the source modules under `../../src/`.
+Derive HTTP methods and contract-relative paths from `contracts/sdk-endpoints.json` or `contracts/openapi/`. Do not invent operation routes or request/response fields. See [the architecture guide](../../docs/ARCHITECTURE.md), [the crate README](../../README.md), and service modules under `../../src/resources/`.

@@ -1,8 +1,8 @@
 {
   "name": "Frontal Rust SDK",
   "language": "Rust",
-  "version": "0.1.0",
-  "status": "scaffold",
+  "version": "1.0.0",
+  "status": "implementation",
   "documents": [
     {
       "path": ".github/BRANCH_PROTECTION.md",
@@ -43,6 +43,10 @@
     {
       "path": "SECURITY.md",
       "title": "SECURITY"
+    },
+    {
+      "path": "SKILL.md",
+      "title": "SKILL"
     },
     {
       "path": "contracts/README.md",
@@ -107,6 +111,22 @@
     {
       "path": "skills/frontal-sdk/SKILL.md",
       "title": "SKILL"
+    },
+    {
+      "path": "templates/README.md",
+      "title": "README"
+    },
+    {
+      "path": "templates/async-worker/README.md",
+      "title": "README"
+    },
+    {
+      "path": "templates/cli/README.md",
+      "title": "README"
+    },
+    {
+      "path": "templates/web-service/README.md",
+      "title": "README"
     },
     {
       "path": "tests/README.md",

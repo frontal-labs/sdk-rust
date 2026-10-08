@@ -1,86 +1,63 @@
 # Frontal Rust SDK
 
-![Frontal Banner](./banner.png)
-
-**Frontal Rust SDK library.**
-
-This repository contains the Rust SDK package, shared API contracts, developer documentation, examples, and templates.
-
-> **Current status:** the shared async HTTP client, authentication, JSON transport, and structured API errors are implemented. Service-specific operations and endpoint models are still being added. The committed OpenAPI files and endpoint inventory are authoritative; an endpoint in those contracts does not imply that a public SDK operation exists.
-
-## Repository map
-
-| Path | Purpose |
-| --- | --- |
-| `src/` | Rust library source, organized into API infrastructure, models, resources, and private utilities |
-| `contracts/` | OpenAPI snapshots, endpoint inventory, and conformance reports |
-| `docs/` | Rust architecture, onboarding, testing, and release guidance |
-| `examples/` | Rust integration guide and future runnable examples |
-| `templates/` | Rust application starter layouts |
-| `scripts/` | Contract and documentation maintenance utilities |
-| `.github/` | Rust CI, security analysis, and contribution templates |
+Async, typed Rust client for the Frontal API. The crate includes a shared `reqwest` transport, service-scoped clients, structured errors, retries, pagination, polling, and SSE streaming.
 
 ## Install
 
-Add this to `Cargo.toml` after the first crates.io release:
-
-```toml
-[dependencies]
-frontal-sdk = "0.1"
-serde_json = "1"
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+```sh
+cargo add frontal serde_json
+cargo add tokio --features macros,rt-multi-thread
 ```
 
-The package is not published yet. Tokio is the async runtime used by the example, and `serde_json` provides a convenient dynamic response type. Applications can use their own Serde types and runtime.
+## Quickstart
+
+Set `FRONTAL_API_KEY`, then make the first request:
+
+```rust,no_run
+# async fn quickstart() -> frontal::Result<()> {
+# use frontal::Frontal;
+# let frontal = Frontal::from_env()?;
+let agents = frontal.agents().list_agents(&[]).await?;
+println!("{agents:#?}");
+# Ok(())
+# }
+```
+
+All 17 service handles expose operation-specific methods and validate each route against its service contract before sending. Methods use caller-selected Serde request and response types when the OpenAPI snapshots do not define the wire fields. The `agents`, `ai`, and `workflows` services also include concrete models for their primary operations. Use `post_idempotent` for a JSON POST the server supports retrying with an `Idempotency-Key` header.
+
+```rust,no_run
+# async fn configure() -> frontal::Result<()> {
+# use frontal::{Frontal, RetryPolicy};
+let client = Frontal::builder("frt_...")
+    .base_url("https://api.frontal.dev/v1")?
+    .timeout(std::time::Duration::from_secs(10))
+    .retry_policy(RetryPolicy::default())
+    .build()?;
+# let _ = client;
+# Ok(())
+# }
+```
+
+The `default` feature enables all 17 service namespaces. Applications can disable default features and enable only the services they use, such as `frontal = { version = "1", default-features = false, features = ["agents"] }`. SSE support is enabled by the `stream` feature.
+
+## Configuration
+
+`Frontal::from_env()` reads `FRONTAL_API_KEY`, `FRONTAL_API_URL`, `FRONTAL_TIMEOUT` (milliseconds), `FRONTAL_ENV`, and `FRONTAL_DEBUG`. The API URL defaults to `https://api.frontal.dev/v1`; the request timeout defaults to 30 seconds. Rust does not load `.env` files automatically. Use `Frontal::builder(api_key)` to set the URL, timeout, retry policy, environment label, or debug flag directly.
 
 ## Development
 
-Requirements: Rust 1.85 or newer (2021 edition). The crate forbids unsafe code and enables Clippy's `all` lint group. Check the toolchain with `rustc --version` and `cargo --version`.
+The crate uses Rust 2021 and MSRV 1.75. Run the repository checks with:
 
 ```bash
 cargo fmt --all -- --check
+cargo build --workspace
 cargo clippy --all-targets --all-features -- -D warnings
-cargo test
-cargo build
+cargo nextest run
+cargo test --doc
+cargo xtask contract
 ```
 
-## Use the client
-
-The async client reads an API key explicitly or from `FRONTAL_API_KEY`, and accepts caller-defined Serde types for endpoint payloads while endpoint schemas remain contract-driven.
-
-```rust,no_run
-use frontal_sdk::{Client, Result};
-use serde_json::Value;
-
-#[tokio::main]
-async fn main() -> Result<()> {
-    let client = Client::from_env()?;
-    let agents: Value = client.get("agents").await?;
-    println!("{agents:#}");
-    Ok(())
-}
-```
-
-See [`examples/list_agents.rs`](./examples/list_agents.rs) for a complete example and [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for client behavior.
-
-## Application templates
-
-The [`templates/`](./templates/README.md) directory contains standalone CLI, async worker, and Axum web-service starters. Build all three against this checkout with `cargo check --manifest-path templates/Cargo.toml --workspace`.
-
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md), [`docs/ONBOARDING.md`](./docs/ONBOARDING.md), and [`AGENTS.md`](./AGENTS.md).
-
-## Planned configuration
-
-The client reads `FRONTAL_API_KEY` with `Client::from_env()`. Set the API URL and request timeout with `Client::builder`; the other variables describe planned configuration only.
-
-| Variable | Purpose |
-| --- | --- |
-| `FRONTAL_API_KEY` | API key (`frt_...`) |
-| `FRONTAL_API_URL` | API base URL; defaults to `https://api.frontal.dev/v1` |
-| `FRONTAL_ENV` | Runtime environment (`development`, `test`, or `production`) |
-| `FRONTAL_DEBUG` | Enable debug logging |
-
-Rust does not load `.env` files by default. Read environment variables explicitly or inject them through your deployment environment. The committed [`.env.example`](./.env.example) is a reference only; do not commit a populated `.env` file.
+HTTP behavior is tested with `wiremock`, so the test suite does not require a Frontal backend. See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md), [`docs/ONBOARDING.md`](./docs/ONBOARDING.md), and [`CONTRIBUTING.md`](./CONTRIBUTING.md) for details.
 
 ## License
 
