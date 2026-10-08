@@ -1,5 +1,9 @@
 # Frontal Rust SDK
 
+![Frontal Banner](./banner.png)
+
+[![skills.sh](https://skills.sh/b/frontal-labs/sdk-rust)](https://skills.sh/frontal-labs/sdk-rust)
+
 Async, typed Rust client for the Frontal API. The crate includes a shared `reqwest` transport, service-scoped clients, structured errors, retries, pagination, polling, and SSE streaming.
 
 ## Install
@@ -58,6 +62,14 @@ cargo xtask contract
 ```
 
 HTTP behavior is tested with `wiremock`, so the test suite does not require a Frontal backend. See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md), [`docs/ONBOARDING.md`](./docs/ONBOARDING.md), and [`CONTRIBUTING.md`](./CONTRIBUTING.md) for details.
+
+## Agent skills
+
+Install this repository's Rust-specific agent skills with the [skills CLI](https://skills.sh/docs/cli):
+
+```bash
+npx skills add frontal-labs/sdk-rust
+```
 
 ## License
 

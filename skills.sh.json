@@ -1,0 +1,16 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Rust SDK Engineering",
+      "description": "Async Rust client behavior, service features, and contract types for Frontal.",
+      "skills": [
+        "frontal-sdk",
+        "rust-async-api",
+        "rust-serde-contract-services",
+        "rust-best-practices"
+      ]
+    }
+  ]
+}
