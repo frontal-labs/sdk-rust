@@ -1,5 +1,15 @@
+# Replace these team slugs with teams that have write access to this repository.
 * @sdk-team/core @sdk-team/maintainers
+
 /.github/ @sdk-team/maintainers
+/CODEOWNERS @sdk-team/maintainers
 /contracts/ @sdk-team/maintainers
 /docs/ @sdk-team/maintainers
+
+/Cargo.toml @sdk-team/core
+/Cargo.lock @sdk-team/core
 /src/ @sdk-team/core
+/tests/ @sdk-team/core
+/templates/ @sdk-team/core
+/examples/ @sdk-team/core
+/xtask/ @sdk-team/core

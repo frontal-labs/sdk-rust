@@ -1,12 +1,14 @@
 ## Summary
 
-## Validation
+Describe the change and its user impact.
 
-- [ ] Formatting and lint checks pass
-- [ ] Build and tests pass
-- [ ] Contract snapshots and generated reports are current when relevant
-- [ ] Public API docs and examples are updated
+## Checklist
+
+- [ ] Tests and CI checks pass.
+- [ ] Public API docs and examples are updated when needed.
+- [ ] `CHANGELOG.md` is updated for user-visible changes.
+- [ ] Contract snapshots and reports are current when relevant.
 
 ## Compatibility
 
-Describe any behavior or API compatibility impact.
+Describe any public API or behavior compatibility impact, or write “None.”
