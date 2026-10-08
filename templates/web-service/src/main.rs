@@ -3,12 +3,12 @@
 use std::{env, error::Error, net::SocketAddr};
 
 use axum::{extract::State, http::StatusCode, routing::get, Json, Router};
-use frontal_sdk::Client;
-use serde_json::Value;
+use frontal::Frontal;
+use frontal::models::agents::AgentPage;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let client = Client::from_env()?;
+    let client = Frontal::from_env()?;
     let address = env::var("BIND_ADDR")
         .unwrap_or_else(|_| "127.0.0.1:3000".to_owned())
         .parse::<SocketAddr>()?;
@@ -22,7 +22,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn routes() -> Router<Client> {
+fn routes() -> Router<Frontal> {
     Router::new()
         .route("/healthz", get(health))
         .route("/agents", get(list_agents))
@@ -32,14 +32,21 @@ async fn health() -> &'static str {
     "ok"
 }
 
-async fn list_agents(State(client): State<Client>) -> Result<Json<Value>, (StatusCode, String)> {
-    client.get("agents").await.map(Json).map_err(|error| {
-        eprintln!("Frontal agent request failed: {error}");
-        (
-            StatusCode::BAD_GATEWAY,
-            "upstream Frontal request failed".to_owned(),
-        )
-    })
+async fn list_agents(
+    State(client): State<Frontal>,
+) -> Result<Json<AgentPage>, (StatusCode, String)> {
+    client
+        .agents()
+        .list_agents(&[])
+        .await
+        .map(Json)
+        .map_err(|error| {
+            eprintln!("Frontal agent request failed: {error}");
+            (
+                StatusCode::BAD_GATEWAY,
+                "upstream Frontal request failed".to_owned(),
+            )
+        })
 }
 
 async fn shutdown_signal() {

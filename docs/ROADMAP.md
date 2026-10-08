@@ -1,8 +1,9 @@
 # Rust SDK roadmap
 
-- [x] Add the Rust-native repository structure and project configuration.
-- [x] Add the shared API contract snapshots and Rust coverage placeholder.
-- [ ] Implement the core client and error model in Rust.
-- [ ] Implement all service modules and unified accessors.
-- [ ] Add contract conformance, Rust tests, and executable examples.
-- [ ] Configure protected crates.io releases.
+- [x] Establish the Rust 2021 crate, Rust 1.75 MSRV, community files, and CI toolchain.
+- [x] Add one async client with shared auth, configuration, retries, pagination, polling, streaming, and errors.
+- [x] Expose all 17 service namespaces behind Cargo features with operation-specific methods mapped to the endpoint inventory.
+- [x] Add wiremock tests, README doctests, examples, application templates, and contract drift checks.
+- [x] Configure release-plz and cargo-semver-checks for the 1.0.0 release line.
+- [ ] Publish 1.0.0 after the release pull request is merged and `CARGO_REGISTRY_TOKEN` is configured.
+- [ ] Add endpoint-specific model types when the shared contracts define request and response fields.
