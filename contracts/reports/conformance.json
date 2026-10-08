@@ -1,0 +1,8 @@
+{
+  "repository": "sdk-rust",
+  "language": "Rust",
+  "status": "not-started",
+  "matched": 0,
+  "unmatched": 347,
+  "note": "No Rust service operations are implemented in this scaffold."
+}

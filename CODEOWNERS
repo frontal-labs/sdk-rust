@@ -1,0 +1,5 @@
+* @sdk-team/core @sdk-team/maintainers
+/.github/ @sdk-team/maintainers
+/contracts/ @sdk-team/maintainers
+/docs/ @sdk-team/maintainers
+/src/ @sdk-team/core

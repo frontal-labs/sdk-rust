@@ -1,0 +1,15 @@
+# Local secrets
+.env
+.env.*.local
+!.env.example
+
+# Operating systems and editors
+.DS_Store
+.vscode/
+*.swp
+*.swo
+
+# Cargo build output and editor backups
+/target/
+**/*.rs.bk
+/coverage/

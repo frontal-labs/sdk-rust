@@ -1,0 +1,116 @@
+{
+  "name": "Frontal Rust SDK",
+  "language": "Rust",
+  "version": "0.1.0",
+  "status": "scaffold",
+  "documents": [
+    {
+      "path": ".github/BRANCH_PROTECTION.md",
+      "title": "BRANCH PROTECTION"
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "title": "PULL REQUEST TEMPLATE"
+    },
+    {
+      "path": "AGENTS.md",
+      "title": "AGENTS"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "title": "CHANGELOG"
+    },
+    {
+      "path": "CODE_OF_CONDUCT.md",
+      "title": "CODE OF CONDUCT"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "title": "CONTRIBUTING"
+    },
+    {
+      "path": "LICENSE.md",
+      "title": "LICENSE"
+    },
+    {
+      "path": "README.md",
+      "title": "README"
+    },
+    {
+      "path": "RELEASE.md",
+      "title": "RELEASE"
+    },
+    {
+      "path": "SECURITY.md",
+      "title": "SECURITY"
+    },
+    {
+      "path": "contracts/README.md",
+      "title": "README"
+    },
+    {
+      "path": "contracts/reports/migration-matrix.md",
+      "title": "migration-matrix"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "title": "ARCHITECTURE"
+    },
+    {
+      "path": "docs/DEVELOPERS.md",
+      "title": "DEVELOPERS"
+    },
+    {
+      "path": "docs/ONBOARDING.md",
+      "title": "ONBOARDING"
+    },
+    {
+      "path": "docs/OVERVIEW.md",
+      "title": "OVERVIEW"
+    },
+    {
+      "path": "docs/PUBLISHING.md",
+      "title": "PUBLISHING"
+    },
+    {
+      "path": "docs/README.md",
+      "title": "README"
+    },
+    {
+      "path": "docs/RELEASING.md",
+      "title": "RELEASING"
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "title": "ROADMAP"
+    },
+    {
+      "path": "docs/SECURITY.md",
+      "title": "SECURITY"
+    },
+    {
+      "path": "docs/TESTING.md",
+      "title": "TESTING"
+    },
+    {
+      "path": "examples/README.md",
+      "title": "README"
+    },
+    {
+      "path": "examples/SDKS_GUIDE.md",
+      "title": "SDKS GUIDE"
+    },
+    {
+      "path": "scripts/README.md",
+      "title": "README"
+    },
+    {
+      "path": "skills/frontal-sdk/SKILL.md",
+      "title": "SKILL"
+    },
+    {
+      "path": "tests/README.md",
+      "title": "README"
+    }
+  ]
+}

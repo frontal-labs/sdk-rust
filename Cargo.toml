@@ -1,0 +1,11 @@
+[package]
+name = "frontal-sdk"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/frontal-labs/sdk-rust"
+description = "Rust client library for the Frontal API"
+readme = "README.md"
+
+[lib]
+path = "src/lib.rs"

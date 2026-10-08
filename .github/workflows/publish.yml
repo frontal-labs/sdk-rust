@@ -1,0 +1,15 @@
+name: crates.io release readiness
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Validate package metadata
+        run: cargo metadata --format-version 1 --no-deps
+      - name: Explain release route
+        run: echo "Run cargo publish --dry-run for the single frontal-sdk package before release."
