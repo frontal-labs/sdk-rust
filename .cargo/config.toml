@@ -1,2 +1,5 @@
 [alias]
-ci = "clippy --all-targets --all-features -- -D warnings"
+xtask = "run --package xtask --"
+
+[resolver]
+incompatible-rust-versions = "fallback"

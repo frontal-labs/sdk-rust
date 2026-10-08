@@ -1,5 +1,6 @@
 //! Safe relative endpoint paths and URL construction.
 
+use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 use reqwest::Url;
 
 use crate::errors::Error;
@@ -47,6 +48,17 @@ impl AsRef<str> for EndpointPath {
     }
 }
 
+/// Percent-encode a dynamic value for safe insertion as one path segment.
+///
+/// ```
+/// let id = frontal::encode_path_segment("agent/one");
+/// assert_eq!(id, "agent%2Fone");
+/// ```
+#[must_use]
+pub fn encode_path_segment(segment: &str) -> String {
+    utf8_percent_encode(segment, NON_ALPHANUMERIC).to_string()
+}
+
 pub(crate) fn join(base_url: &Url, endpoint: &EndpointPath) -> crate::Result<Url> {
     let url = base_url
         .join(endpoint.as_str())
@@ -63,7 +75,7 @@ pub(crate) fn join(base_url: &Url, endpoint: &EndpointPath) -> crate::Result<Url
 
 #[cfg(test)]
 mod tests {
-    use super::EndpointPath;
+    use super::{encode_path_segment, EndpointPath};
 
     #[test]
     fn rejects_absolute_and_traversal_paths() {
@@ -84,5 +96,11 @@ mod tests {
     fn accepts_paths_with_or_without_leading_slash() {
         assert_eq!(EndpointPath::new("/agents").unwrap().as_str(), "agents");
         assert_eq!(EndpointPath::new("agents").unwrap().as_str(), "agents");
+    }
+
+    #[test]
+    fn encodes_dynamic_values_as_one_segment() {
+        assert_eq!(encode_path_segment("agent/one"), "agent%2Fone");
+        assert_eq!(encode_path_segment(".."), "%2E%2E");
     }
 }
