@@ -1,0 +1,24 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "Frontal Rust SDK",
+  "description": "Async Rust client library for the Frontal API, with reqwest transport, typed models, service clients, and optional SSE streaming.",
+  "folders": [],
+  "excludeFolders": [
+    ".git",
+    "target",
+    ".cargo/registry",
+    "dist",
+    "build",
+    "coverage",
+    "test-results",
+    "tmp",
+    "temp"
+  ],
+  "rules": [
+    "The published crate is named frontal and uses Rust 2021 with MSRV 1.75.",
+    "Use contracts/sdk-endpoints.json and contracts/openapi as the source of truth for endpoint methods and paths.",
+    "Keep shared transport and request behavior in src/api, models in src/models, and service handles in src/resources.",
+    "The default feature enables all service namespaces; SSE support is enabled by the stream feature.",
+    "Use Result for fallible operations and keep internal helpers private unless intentionally public."
+  ]
+}

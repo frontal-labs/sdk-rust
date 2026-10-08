@@ -1,4 +1,0 @@
-{
-  "name": "Frontal Rust SDK",
-  "description": "Rust SDK workspace. Follow AGENTS.md, use the native toolchain, and check contracts/ before adding service operations."
-}
