@@ -9,7 +9,7 @@ In **Settings → Rules → Rulesets**, create an active branch ruleset targetin
 - Require a pull request before merging, with at least one approval.
 - Require review from Code Owners and dismiss stale approvals after new commits.
 - Require all review conversations to be resolved.
-- Require these status checks: `CI / quality`, `CI / msrv`, `CI / platform (ubuntu-latest)`, `CI / platform (macos-latest)`, `CI / platform (windows-latest)`, `CI / commitlint`, `CI / semver`, `CodeQL / analyze`, and `Dependency review / review`.
+- Require these status checks: `CI / quality`, `CI / msrv`, `CI / platform (ubuntu-latest)`, `CI / platform (macos-latest)`, `CI / platform (windows-latest)`, `CI / commitlint`, `CI / semver`, and `CodeQL / analyze`. Also require `Dependency review / review` when the repository is public or GitHub Advanced Security is enabled; GitHub skips that job for private repositories without GHAS.
 - Require branches to be up to date before merging.
 - Require linear history; block force pushes and branch deletion.
 - Do not allow bypasses except for a documented break-glass administrator.
@@ -37,4 +37,4 @@ Enable Discussions in **Settings → General → Features** if the issue-form co
 
 In **Settings → Actions → General**, restrict allowed actions to trusted publishers and require actions to be pinned to full-length commit SHAs. Dependabot checks the pinned action references weekly.
 
-If the repository is private, confirm the GitHub plan supports Dependency Review and artifact attestations. If not, enable the required plan or adjust those optional gates before enforcing them as required checks.
+If the repository is private, confirm the GitHub plan supports Dependency Review and artifact attestations. The dependency review job is skipped without GHAS; enable the required plan before making it a required status check. Artifact attestations are skipped for private repositories unless the plan supports them.

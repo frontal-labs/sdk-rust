@@ -95,7 +95,7 @@ jobs:
         run: git fetch origin "+refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
       - name: Remove checkout credentials before running commitlint
         run: git config --local --unset-all http.https://github.com/.extraheader || true
-      - uses: actions/setup-node@249970729cb0ef3589644e289664e5dc5ba9c38 # v6
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24
           cache: npm
