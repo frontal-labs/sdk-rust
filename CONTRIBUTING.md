@@ -2,7 +2,7 @@
 
 ## Set up
 
-Install stable Rust (2021 edition). Follow [`docs/ONBOARDING.md`](./docs/ONBOARDING.md) to prepare the Rust toolchain and local environment.
+Install Rust 1.85 or newer (2021 edition). The crate's MSRV is declared in `Cargo.toml`; follow [`docs/ONBOARDING.md`](./docs/ONBOARDING.md) to prepare the toolchain and local environment.
 
 ## Make a change
 

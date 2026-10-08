@@ -1,3 +1,3 @@
 # Rust examples
 
-Examples in this repository use Rust project conventions. Each runnable sample will pin or reference the local SDK modules and avoid live credentials by default. The current API runtime is not implemented, so the guide contains setup and module navigation only.
+Examples in this repository use Rust project conventions and avoid hard-coded credentials. `list_agents.rs` demonstrates environment-based authentication, a typed async client call, and JSON response handling. Run it with `FRONTAL_API_KEY=frt_... cargo run --example list_agents`.

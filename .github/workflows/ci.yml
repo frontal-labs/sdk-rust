@@ -6,6 +6,13 @@ on:
 permissions:
   contents: read
 jobs:
+  msrv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.85.0
+      - name: Check minimum supported Rust version
+        run: cargo check --all-targets --all-features
   ci:
     runs-on: ubuntu-latest
     steps:
@@ -24,3 +31,11 @@ jobs:
         run: cargo test
       - name: Check contract files
         run: python3 scripts/check_contracts.py
+      - name: Check application templates
+        run: cargo check --manifest-path templates/Cargo.toml --workspace
+      - name: Format application templates
+        run: cargo fmt --manifest-path templates/Cargo.toml --all -- --check
+      - name: Lint application templates
+        run: cargo clippy --manifest-path templates/Cargo.toml --workspace --all-targets -- -D warnings
+      - name: Test application templates
+        run: cargo test --manifest-path templates/Cargo.toml --workspace

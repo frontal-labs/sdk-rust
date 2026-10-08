@@ -1,6 +1,6 @@
 # Rust onboarding
 
-1. Install stable Rust (2021 edition).
+1. Install Rust 1.85 or newer (2021 edition), including the rustfmt and clippy components.
 2. Clone this repository and install or resolve its dependencies using the Rust-native toolchain.
 3. Run the format, lint, build, and test commands in the root README.
 4. Review `AGENTS.md`, `docs/ARCHITECTURE.md`, and `contracts/README.md`.

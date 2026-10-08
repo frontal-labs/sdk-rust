@@ -1,2 +1,2 @@
 [alias]
-ci = "clippy --workspace --all-targets --all-features -- -D warnings"
+ci = "clippy --all-targets --all-features -- -D warnings"

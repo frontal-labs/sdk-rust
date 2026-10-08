@@ -1,5 +1,6 @@
-//! Shared API infrastructure for the Frontal SDK.
-//!
-//! Authentication, HTTP transport, error mapping, retries, pagination, and
-//! streaming belong in this module so service resources use consistent behavior.
-//! These runtime facilities have not been implemented yet.
+//! Shared HTTP client, configuration, and error types for the Frontal SDK.
+
+mod client;
+
+pub use crate::{errors::ApiError, errors::Error, global::Result};
+pub use client::{Client, ClientBuilder};

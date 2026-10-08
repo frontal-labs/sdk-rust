@@ -1,0 +1,3 @@
+[workspace]
+members = ["cli", "async-worker", "web-service"]
+resolver = "2"
