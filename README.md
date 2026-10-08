@@ -2,7 +2,7 @@
 
 ![Frontal Banner](./banner.png)
 
-**Frontal client library for Rust.**
+**Frontal Rust SDK library.**
 
 This repository contains the Rust SDK package, shared API contracts, developer documentation, examples, and templates.
 
