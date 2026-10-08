@@ -1,10 +1,49 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
+  - package-ecosystem: cargo
     directory: "/"
     schedule:
-      interval: "weekly"
-  - package-ecosystem: "cargo"
+      interval: weekly
+    groups:
+      cargo-minor-and-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+      cargo-major:
+        patterns: ["*"]
+        update-types: [major]
+
+  - package-ecosystem: cargo
+    directory: "/templates"
+    schedule:
+      interval: weekly
+    groups:
+      template-cargo-minor-and-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+      template-cargo-major:
+        patterns: ["*"]
+        update-types: [major]
+
+  - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: weekly
+    groups:
+      npm-minor-and-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+      npm-major:
+        patterns: ["*"]
+        update-types: [major]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      github-actions-minor-and-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+      github-actions-major:
+        patterns: ["*"]
+        update-types: [major]
