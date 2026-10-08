@@ -3,8 +3,8 @@
 use std::{env, error::Error, net::SocketAddr};
 
 use axum::{extract::State, http::StatusCode, routing::get, Json, Router};
-use frontal::Frontal;
 use frontal::models::agents::AgentPage;
+use frontal::Frontal;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
