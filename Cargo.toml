@@ -1,26 +1,77 @@
 [package]
-name = "frontal-sdk"
-version = "0.1.0"
+name = "frontal"
+version = "1.0.0"
 edition = "2021"
-rust-version = "1.85"
+rust-version = "1.75"
 license = "Apache-2.0"
 repository = "https://github.com/frontal-labs/sdk-rust"
-description = "Rust client library for the Frontal API"
+description = "Async Rust SDK for the Frontal API"
 readme = "README.md"
 keywords = ["frontal", "api", "sdk", "client"]
 categories = ["api-bindings", "web-programming"]
+exclude = [
+    ".cargo/**", ".claude/**", ".cursor*", ".github/**", ".env.example",
+    ".gitattributes", ".gitleaks.toml", ".gitmessage", "AGENTS.md", "PLAN.md",
+    "SKILL.md", "clippy.toml", "commitlint.config.cjs", "context7.json", "deny.toml",
+    "lefthook.yml", "mcp.json", "package.json", "rust-toolchain.toml", "rustfmt.toml",
+    "skills/**",
+]
+
+[workspace]
+members = ["xtask"]
+resolver = "2"
+
+[features]
+default = ["full"]
+full = [
+    "ai", "agents", "audit", "auth", "billing", "blob", "connectors", "data",
+    "governance", "lineage", "observability", "ontology", "pipelines", "sandbox",
+    "schedules", "webhooks", "workflows", "stream",
+]
+ai = []
+agents = []
+audit = []
+auth = []
+billing = []
+blob = []
+connectors = []
+data = []
+governance = []
+lineage = []
+observability = []
+ontology = []
+pipelines = []
+sandbox = []
+schedules = []
+webhooks = []
+workflows = []
+stream = ["dep:eventsource-stream", "dep:futures-util"]
 
 [lib]
 path = "src/lib.rs"
 
 [dependencies]
-reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+eventsource-stream = { version = "0.2", optional = true }
+futures-util = { version = "0.3", default-features = false, features = ["std"], optional = true }
+# Pin these semver-compatible transitive versions so Rust 1.75 remains usable.
+hyper-rustls = { version = "=0.27.7", default-features = false }
+hyper-util = "=0.1.20"
+httpdate = "1"
+idna = "=1.0.3"
+indexmap = "=2.7.1"
+percent-encoding = "2"
+reqwest = { version = "0.12", features = ["json", "multipart", "rustls-tls", "stream"], default-features = false }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-thiserror = "2"
+thiserror = "1"
+tokio = { version = "1", features = ["time"] }
+tracing = "0.1"
+url = "=2.5.4"
+zeroize = "=1.8.2"
 
 [dev-dependencies]
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+wiremock = "=0.6.1"
 
 [lints.rust]
 unsafe_code = "forbid"

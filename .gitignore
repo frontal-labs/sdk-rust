@@ -11,5 +11,6 @@
 
 # Cargo build output and editor backups
 /target/
+node_modules/
 **/*.rs.bk
 /coverage/
