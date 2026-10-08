@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question or discuss SDK usage
+    url: https://github.com/frontal-labs/sdk-rust/discussions
+    about: Use Discussions for support and usage questions.
+  - name: Report a security vulnerability
+    url: https://github.com/frontal-labs/sdk-rust/security/advisories/new
+    about: Report vulnerabilities privately. Do not open a public issue.

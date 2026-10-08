@@ -1,10 +1,9 @@
 # Rust onboarding
 
-1. Install Rust 1.85 or newer (2021 edition), including the rustfmt and clippy components.
-2. Clone this repository and install or resolve its dependencies using the Rust-native toolchain.
-3. Run the format, lint, build, and test commands in the root README.
-4. Review `AGENTS.md`, `docs/ARCHITECTURE.md`, and `contracts/README.md`.
-5. Select a service module under `src/resources/` and compare its planned operations with `contracts/sdk-endpoints.json`.
-6. Add implementation, Rust tests, documentation, and examples together.
+1. Install Rust 1.75 or newer.
+2. Add the SDK and the small dependencies used by the quickstart: `cargo add frontal serde_json`, then `cargo add tokio --features macros,rt-multi-thread`.
+3. Set `FRONTAL_API_KEY` in your process environment.
+4. Copy the [README quickstart](../README.md#quickstart) into an async function and choose a response type matching the endpoint contract.
+5. Use `Frontal::builder(api_key)` when you need a custom base URL, timeout, retry policy, or environment label.
 
-Install stable Rust with rustup and the rustfmt/clippy components. From the repository root, use `cargo check`, `cargo fmt --all -- --check`, and `cargo test`. Export environment variables in your shell; Rust does not load `.env` files automatically.
+From a checkout, use the ordered checks in the root README. The wiremock tests and README doctests do not require a live API key or backend. Rust does not load `.env` files automatically.

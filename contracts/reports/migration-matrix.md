@@ -1,11 +1,12 @@
 # Rust SDK migration matrix
 
-_Status: not started. This report measures source code in `sdk-rust` only._
+_Status: route-level support. This report measures source code in `sdk-rust` only._
 
 | Metric | Value |
 | --- | ---: |
-| Implemented endpoints | 0 |
-| Contract endpoint entries | 347 |
-| Coverage | 0% |
+| Supported endpoint entries | 370 |
+| Contract endpoint entries | 370 |
+| Route-level coverage | 100% |
+| Direct OpenAPI operation overlap | 151 / 370 |
 
-Regenerate this report from the Rust service modules after operations are implemented. Reports from other language SDKs are not evidence of this repository's coverage.
+Every inventory method is available through its feature-gated service handle and shared typed verb transport. Route-level support does not imply a concrete model type exists for every endpoint; use caller-defined Serde types where the contracts do not specify fields. Reports from other language SDKs are not evidence of this repository's coverage.

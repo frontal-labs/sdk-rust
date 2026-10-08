@@ -2,13 +2,13 @@
 
 use std::{env, error::Error, time::Duration};
 
-use frontal_sdk::Client;
+use frontal::Frontal;
 use serde_json::Value;
 use tokio::{signal, time};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let client = Client::from_env()?;
+    let client = Frontal::from_env()?;
     let period = poll_period()?;
     let mut ticker = time::interval(period);
 
@@ -18,7 +18,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     );
     loop {
         tokio::select! {
-            _ = ticker.tick() => match client.get::<Value>("agents/health").await {
+            _ = ticker.tick() => match client.agents().get::<Value>("agents/health").await {
                 Ok(health) => println!("agent health: {health}"),
                 Err(error) => eprintln!("health request failed: {error}"),
             },

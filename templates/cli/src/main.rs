@@ -2,7 +2,7 @@
 
 use std::{env, error::Error, process};
 
-use frontal_sdk::Client;
+use frontal::Frontal;
 use serde_json::Value;
 
 #[tokio::main]
@@ -19,15 +19,15 @@ async fn run() -> Result<(), Box<dyn Error>> {
 
     match command.as_str() {
         "list-agents" => {
-            let client = Client::from_env()?;
-            let agents: Value = client.get("agents").await?;
+            let client = Frontal::from_env()?;
+            let agents = client.agents().list_agents(&[]).await?;
             println!("{}", serde_json::to_string_pretty(&agents)?);
         }
         "create-agent" => {
             let payload = args.next().ok_or("provide a JSON request body")?;
             let body: Value = serde_json::from_str(&payload)?;
-            let client = Client::from_env()?;
-            let created: Value = client.post("agents", &body).await?;
+            let client = Frontal::from_env()?;
+            let created: Value = client.agents().post("agents", &body).await?;
             println!("{}", serde_json::to_string_pretty(&created)?);
         }
         "help" | "--help" | "-h" => {

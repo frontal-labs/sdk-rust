@@ -1,41 +1,130 @@
 name: CI
+
 on:
   pull_request:
+    branches: [main]
   push:
     branches: [main]
+
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  msrv:
+  quality:
+    name: quality
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@1.120.0
-      - name: Check minimum supported Rust version
-        run: cargo check --all-targets --all-features
-  ci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
         with:
           components: rustfmt, clippy
-      - uses: Swatinem/rust-cache@v2
-      - name: Check formatting
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - uses: taiki-e/install-action@f7e5d7c961414b23f5b25b2da9294395d08513ad # v2
+        with:
+          tool: cargo-nextest
+      - name: Format
         run: cargo fmt --all -- --check
       - name: Build
-        run: cargo build
+        run: cargo build --workspace --locked
       - name: Lint
-        run: cargo clippy --all-targets --all-features -- -D warnings
+        run: cargo clippy --all-targets --all-features --locked -- -D warnings
       - name: Test
-        run: cargo test
-      - name: Check contract files
-        run: python3 scripts/check_contracts.py
-      - name: Check application templates
-        run: cargo check --manifest-path templates/Cargo.toml --workspace
-      - name: Format application templates
-        run: cargo fmt --manifest-path templates/Cargo.toml --all -- --check
-      - name: Lint application templates
-        run: cargo clippy --manifest-path templates/Cargo.toml --workspace --all-targets -- -D warnings
-      - name: Test application templates
-        run: cargo test --manifest-path templates/Cargo.toml --workspace
+        run: cargo nextest run --locked
+      - name: Examples
+        run: |
+          cargo check --examples --all-features --locked
+          cargo check --manifest-path templates/Cargo.toml --workspace --locked
+          cargo fmt --manifest-path templates/Cargo.toml --all -- --check
+          cargo clippy --manifest-path templates/Cargo.toml --workspace --all-targets --locked -- -D warnings
+      - name: Docs
+        run: |
+          cargo test --doc --locked
+          cargo doc --workspace --all-features --no-deps --locked
+      - name: Contract
+        run: |
+          cargo --locked xtask contract
+          python3 scripts/check_contracts.py
+
+  msrv:
+    name: msrv
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
+        with:
+          toolchain: 1.75.0
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - name: Check minimum supported Rust version
+        run: cargo check --workspace --all-targets --all-features --locked
+
+  platform:
+    name: platform (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - uses: taiki-e/install-action@f7e5d7c961414b23f5b25b2da9294395d08513ad # v2
+        with:
+          tool: cargo-nextest
+      - name: Build all features
+        run: cargo build --workspace --all-features --locked
+      - name: Run tests
+        run: cargo nextest run --workspace --all-features --locked
+
+  commitlint:
+    name: commitlint
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - name: Fetch pull request commits
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: git fetch origin "+refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
+      - name: Remove checkout credentials before running commitlint
+        run: git config --local --unset-all http.https://github.com/.extraheader || true
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install commit message tooling
+        run: npm ci --ignore-scripts
+      - name: Check Conventional Commit messages
+        run: >-
+          npx --no-install commitlint
+          --from "${{ github.event.pull_request.base.sha }}"
+          --to "refs/remotes/origin/pr-${{ github.event.pull_request.number }}"
+
+  semver:
+    name: semver
+    needs: quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - uses: taiki-e/install-action@f7e5d7c961414b23f5b25b2da9294395d08513ad # v2
+        with:
+          tool: cargo-semver-checks
+      - name: Check public API against the latest release
+        shell: bash
+        run: |
+          baseline=$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || true)
+          if [[ -n "$baseline" ]]; then
+            cargo semver-checks check-release --baseline-rev "$baseline"
+          else
+            echo "No released baseline exists yet; the first v1.0.0 release establishes it."
+          fi

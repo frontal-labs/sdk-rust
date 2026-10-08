@@ -1,0 +1,8 @@
+pre-commit:
+  commands:
+    rustfmt:
+      run: cargo fmt --all -- --check
+commit-msg:
+  commands:
+    commitlint:
+      run: npx --no-install commitlint --edit {1}
