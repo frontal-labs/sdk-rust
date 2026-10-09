@@ -8,7 +8,7 @@ Read `AGENTS.md` first for repository layout, project conventions, and contract 
 
 Honor the pinned Rust toolchain, Rust 2021 edition, and MSRV 1.75. Keep shared transport in src/api, service handles in src/resources, contract-backed model fields only, and internal helpers private. Cover behavior with wiremock and rustdoc examples.
 
-Do not add public endpoints, wire fields, or behavior unsupported by the committed contracts. Keep credentials, tokens, and customer data out of source, logs, fixtures, and examples. Make the smallest compatible change and update documentation/examples when public behavior changes.
+Do not add public endpoints, wire fields, or behavior unsupported by the authoritative contracts. This SDK is unreleased: keep a single canonical v1 API and remove obsolete aliases instead of maintaining compatibility layers. When the backend contract is available, update the committed snapshot and manifest hash alongside implementation changes. Keep credentials, tokens, and customer data out of source, logs, fixtures, and examples; update documentation/examples when public behavior changes.
 
 ## Skills
 

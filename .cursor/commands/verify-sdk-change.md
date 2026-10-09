@@ -1,4 +1,4 @@
-Review the current diff and identify affected modules, public behavior, and relevant contract entries. Run only checks relevant to the changes, choosing from the repository commands below. Do not edit code unless I explicitly ask you to fix a failure. Report checks run and their results.
+Review the current diff and identify affected modules, public behavior, and relevant contract entries. This SDK is unreleased, so preserve one canonical v1 API and remove dead compatibility aliases instead of maintaining parallel versions. Derive public wire types from authoritative backend contracts; update snapshots and recorded hashes when those contracts change. Run relevant checks and report their results. When asked to implement or fix, make the necessary edits as well as running the checks.
 
 ```sh
 cargo fmt --all -- --check

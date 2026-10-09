@@ -11,6 +11,7 @@ FILES = [
     ROOT / "contracts/coverage-floor.json",
     ROOT / "contracts/openapi/api.openapi.json",
     ROOT / "contracts/openapi/ai.openapi.generated.json",
+    ROOT / "contracts/openapi/workflows.openapi.json",
     ROOT / "contracts/openapi/manifest.json",
 ]
 for path in FILES:

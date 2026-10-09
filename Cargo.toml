@@ -25,7 +25,7 @@ resolver = "2"
 default = ["full"]
 full = [
     "ai", "agents", "audit", "auth", "billing", "blob", "connectors", "data",
-    "governance", "lineage", "observability", "ontology", "pipelines", "sandbox",
+    "governance", "lineage", "observability", "ontology", "pipelines",
     "schedules", "webhooks", "workflows", "stream",
 ]
 ai = []
@@ -41,7 +41,6 @@ lineage = []
 observability = []
 ontology = []
 pipelines = []
-sandbox = []
 schedules = []
 webhooks = []
 workflows = []
@@ -49,6 +48,16 @@ stream = ["dep:eventsource-stream", "dep:futures-util"]
 
 [lib]
 path = "src/lib.rs"
+
+[[test]]
+name = "client"
+path = "tests/client.rs"
+required-features = ["full"]
+
+[[example]]
+name = "list_agents"
+path = "examples/list_agents.rs"
+required-features = ["agents"]
 
 [dependencies]
 eventsource-stream = { version = "0.2", optional = true }

@@ -3,7 +3,7 @@
 use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 use reqwest::Url;
 
-use crate::errors::Error;
+use crate::errors::FrontalError;
 
 /// A validated endpoint path relative to the configured API base URL.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -25,12 +25,12 @@ impl EndpointPath {
                 .next()
                 .is_some_and(|segment| segment.contains(':'))
         {
-            return Err(Error::InvalidPath(path.to_owned()));
+            return Err(FrontalError::InvalidPath(path.to_owned()));
         }
 
         let normalized = path.trim_start_matches('/');
         if normalized.is_empty() {
-            return Err(Error::InvalidPath(path.to_owned()));
+            return Err(FrontalError::InvalidPath(path.to_owned()));
         }
         Ok(Self(normalized.to_owned()))
     }
@@ -62,13 +62,13 @@ pub fn encode_path_segment(segment: &str) -> String {
 pub(crate) fn join(base_url: &Url, endpoint: &EndpointPath) -> crate::Result<Url> {
     let url = base_url
         .join(endpoint.as_str())
-        .map_err(|_| Error::InvalidPath(endpoint.as_str().to_owned()))?;
+        .map_err(|_| FrontalError::InvalidPath(endpoint.as_str().to_owned()))?;
     if url.scheme() != base_url.scheme()
         || url.host_str() != base_url.host_str()
         || url.port() != base_url.port()
         || !url.path().starts_with(base_url.path())
     {
-        return Err(Error::InvalidPath(endpoint.as_str().to_owned()));
+        return Err(FrontalError::InvalidPath(endpoint.as_str().to_owned()));
     }
     Ok(url)
 }

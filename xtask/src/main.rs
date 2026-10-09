@@ -70,9 +70,20 @@ fn check_contract() -> Result<(), String> {
         .map(|(service, _)| service.clone())
         .collect::<BTreeSet<_>>();
 
-    if expected != registry {
+    if !registry.is_subset(&expected) {
         return Err(format!(
-            "service registry differs from endpoint inventory; inventory={expected:?}, SDK={registry:?}"
+            "SDK service registry contains services absent from the endpoint inventory; inventory={expected:?}, SDK={registry:?}"
+        ));
+    }
+    // Keep removals explicit so a deleted service cannot silently shrink SDK coverage.
+    let excluded = expected
+        .difference(&registry)
+        .cloned()
+        .collect::<BTreeSet<_>>();
+    let intentional_exclusions = BTreeSet::from(["sandbox".to_owned()]);
+    if excluded != intentional_exclusions {
+        return Err(format!(
+            "unexpected service exclusions; expected={intentional_exclusions:?}, actual={excluded:?}"
         ));
     }
 
@@ -80,6 +91,7 @@ fn check_contract() -> Result<(), String> {
     for file in [
         "contracts/openapi/api.openapi.json",
         "contracts/openapi/ai.openapi.generated.json",
+        "contracts/openapi/workflows.openapi.json",
     ] {
         let document: serde_json::Value = read_json(&root.join(file))?;
         let paths = document
@@ -102,7 +114,7 @@ fn check_contract() -> Result<(), String> {
     let mut openapi_match_count = 0usize;
     let mut openapi_unmatched_routes = BTreeSet::new();
     for (service, endpoints) in inventory {
-        if endpoints.is_empty() {
+        if endpoints.is_empty() || !registry.contains(&service) {
             continue;
         }
 

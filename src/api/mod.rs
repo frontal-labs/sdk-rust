@@ -2,7 +2,7 @@
 
 mod client;
 
-pub use crate::{errors::ApiError, errors::Error, errors::FrontalError, global::Result};
+pub use crate::{errors::ApiError, errors::FrontalError, global::Result};
 #[cfg(feature = "stream")]
 pub use client::ServerSentEvent;
-pub use client::{Client, ClientBuilder, Frontal, Page, RetryPolicy};
+pub use client::{ClientBuilder, Frontal, Page, RetryPolicy};

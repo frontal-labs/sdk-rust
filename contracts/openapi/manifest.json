@@ -13,6 +13,12 @@
       "file": "ai.openapi.generated.json",
       "upstream": "Frontal AI gateway schema snapshot",
       "sha256": "a82f517d8756941080402c84281b1e3fb00557eaa46800b7039aa04fc75f2aec"
+    },
+    "workflowsApi": {
+      "file": "workflows.openapi.json",
+      "upstream": "frontal@4d13dee59cba0fa73744a0fd8b64d009b30d7ad4:domains/workflows/openapi/workflows/v1/openapi.yaml",
+      "sha256": "36729643da93a705393c8b135a6c984c54fe8ea97f094a764ab873b79fd5a86c",
+      "sourceSha256": "f422b604515daf947e5c01ff9b764963f70cebef2fa19eb7e6ee05b8f45a7bce"
     }
   }
 }

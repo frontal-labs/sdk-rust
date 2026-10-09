@@ -18,6 +18,7 @@ cargo add tokio --features macros,rt-multi-thread
 Set `FRONTAL_API_KEY`, then make the first request:
 
 ```rust,no_run
+# #[cfg(feature = "agents")]
 # async fn quickstart() -> frontal::Result<()> {
 # use frontal::Frontal;
 # let frontal = Frontal::from_env()?;
@@ -27,7 +28,7 @@ println!("{agents:#?}");
 # }
 ```
 
-All 17 service handles expose operation-specific methods and validate each route against its service contract before sending. Methods use caller-selected Serde request and response types when the OpenAPI snapshots do not define the wire fields. The `agents`, `ai`, and `workflows` services also include concrete models for their primary operations. Use `post_idempotent` for a JSON POST the server supports retrying with an `Idempotency-Key` header.
+All 16 supported service handles expose operation-specific methods and validate each route against its service contract before sending. Methods use caller-selected Serde request and response types when the OpenAPI snapshots do not define the wire fields. The `agents`, `ai`, and `workflows` services also include concrete models for their primary operations. Use `post_idempotent` for a JSON POST the server supports retrying with an `Idempotency-Key` header.
 
 ```rust,no_run
 # async fn configure() -> frontal::Result<()> {
@@ -42,7 +43,7 @@ let client = Frontal::builder("frt_...")
 # }
 ```
 
-The `default` feature enables all 17 service namespaces. Applications can disable default features and enable only the services they use, such as `frontal = { version = "1", default-features = false, features = ["agents"] }`. SSE support is enabled by the `stream` feature.
+The `default` feature enables all 16 supported service namespaces. Applications can disable default features and enable only the services they use, such as `frontal = { version = "1", default-features = false, features = ["agents"] }`. SSE support is enabled by the `stream` feature.
 
 ## Configuration
 

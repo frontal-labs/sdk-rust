@@ -1,6 +1,6 @@
 # Frontal Rust SDK guide
 
-The shared SDK client provides async JSON requests, bearer authentication, configurable API URLs and timeouts, retry-safe backoff, pagination, polling, streaming, and structured API errors. Each service handle exposes named methods for its operations over the committed route inventory. Methods use caller-selected Serde request and response types where the OpenAPI snapshots do not define wire fields; the agents, AI, and Workflows services also provide concrete models for their primary operations.
+The shared SDK client provides async JSON requests, bearer authentication, configurable API URLs and timeouts, retry-safe backoff, pagination, polling, streaming, and structured API errors. Each supported service handle exposes named methods for its operations over the committed route inventory. Methods use caller-selected Serde request and response types where the OpenAPI snapshots do not define wire fields; the agents, AI, and Workflows services also provide concrete models for their primary operations.
 
 ## Toolchain
 
@@ -16,7 +16,6 @@ Routes are relative to the configured base URL. Keep query parameters in `get_wi
 
 - `api` — shared HTTP transport, authentication, and response handling.
 - `models` — request and response types grouped by service.
-- `resources` — agents, ai, audit, auth, billing, blob, connectors, data, governance, lineage, observability, ontology, pipelines, sandbox, schedules, webhooks, and workflows.
-- `utils` — private implementation helpers.
+- `resources` — agents, ai, audit, auth, billing, blob, connectors, data, governance, lineage, observability, ontology, pipelines, schedules, webhooks, and workflows.
 
 See `docs/ARCHITECTURE.md`, the [examples](./README.md), and the [application templates](../templates/README.md) for usage. Use caller-defined Serde request and response types where the contracts do not define concrete fields; do not infer request fields from an endpoint name.

@@ -6,6 +6,6 @@ alwaysApply: false
 
 # Rust development rules
 
-Honor rust-toolchain.toml, Rust 2021, and MSRV 1.75. Keep transport in src/api and service handles in src/resources; do not invent contract fields. Cover behavior with wiremock and rustdoc examples.
+Honor rust-toolchain.toml, Rust 2021, and MSRV 1.75. Keep transport in src/api and service handles in src/resources; do not invent contract fields. Prefer concrete models for closed schemas and preserve open JSON only where the contract allows it. Avoid dead modules, unused helpers, duplicate compatibility APIs, and `allow(dead_code)` workarounds. Cover behavior with Wiremock and rustdoc examples.
 
 When implementing behavior changes, add deterministic offline coverage using the repository's existing test tools. Update docs and runnable examples for public API changes. See `AGENTS.md` for project-specific rules and use the applicable skill under `skills/`.

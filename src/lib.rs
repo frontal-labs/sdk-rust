@@ -11,9 +11,9 @@ pub mod resources;
 
 #[cfg(feature = "stream")]
 pub use api::ServerSentEvent;
-pub use api::{Client, ClientBuilder, Frontal, Page, RetryPolicy};
+pub use api::{ClientBuilder, Frontal, Page, RetryPolicy};
 pub use endpoints::{encode_path_segment, EndpointPath};
-pub use errors::{ApiError, Error, ErrorCategory, FrontalError};
+pub use errors::{ApiError, ErrorCategory, FrontalError};
 pub use global::Result;
 
 impl Frontal {
@@ -108,13 +108,6 @@ impl Frontal {
         resources::ServiceClient::new(self.clone(), "pipelines")
     }
 
-    #[cfg(feature = "sandbox")]
-    /// Access the Sandbox service using this client's shared transport.
-    #[must_use]
-    pub fn sandbox(&self) -> resources::sandbox::Sandbox {
-        resources::ServiceClient::new(self.clone(), "sandbox")
-    }
-
     #[cfg(feature = "schedules")]
     /// Access the Schedules service using this client's shared transport.
     #[must_use]
@@ -136,5 +129,3 @@ impl Frontal {
         resources::ServiceClient::new(self.clone(), "workflows")
     }
 }
-
-mod utils;

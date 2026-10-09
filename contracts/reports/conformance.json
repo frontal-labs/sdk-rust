@@ -2,12 +2,12 @@
   "repository": "sdk-rust",
   "language": "Rust",
   "status": "route-level-support",
-  "matched": 370,
+  "matched": 367,
   "unmatched": 0,
-  "openapi_matched": 151,
-  "openapi_unmatched": 219,
-  "support": "service handles validate every inventoried route against its service and HTTP operation; the complete inventory is checked against the frozen TypeScript SDK reference",
-  "note": "All 370 routes are present in the frozen TypeScript SDK endpoint inventory at typescript_reference_commit. The committed OpenAPI snapshots directly describe 151 routes; the remaining routes are explicitly reported as absent from those partial snapshots and are verified against the frozen TypeScript reference.",
+  "openapi_matched": 186,
+  "openapi_unmatched": 181,
+  "support": "service handles validate every supported inventoried route against its service and HTTP operation; Sandbox is intentionally excluded from the Rust service surface",
+  "note": "The frozen TypeScript inventory contains 370 routes across 17 services. This Rust SDK exposes 367 routes across 16 services; Sandbox remains in the reference inventory but is intentionally excluded. The committed OpenAPI snapshots directly describe 186 active Rust routes; the remaining 181 active routes are explicitly reported as absent from those snapshots.",
   "openapi_unmatched_routes": [
     {
       "service": "agents",
@@ -18,21 +18,6 @@
       "service": "agents",
       "method": "GET",
       "path": "/agents"
-    },
-    {
-      "service": "agents",
-      "method": "GET",
-      "path": "/agents/health"
-    },
-    {
-      "service": "agents",
-      "method": "GET",
-      "path": "/agents/runs/{param}"
-    },
-    {
-      "service": "agents",
-      "method": "GET",
-      "path": "/agents/runs/{param}/conversation"
     },
     {
       "service": "agents",
@@ -48,6 +33,21 @@
       "service": "agents",
       "method": "GET",
       "path": "/agents/{param}/versions"
+    },
+    {
+      "service": "agents",
+      "method": "GET",
+      "path": "/agents/health"
+    },
+    {
+      "service": "agents",
+      "method": "GET",
+      "path": "/agents/runs/{param}"
+    },
+    {
+      "service": "agents",
+      "method": "GET",
+      "path": "/agents/runs/{param}/conversation"
     },
     {
       "service": "agents",
@@ -392,11 +392,6 @@
     {
       "service": "billing",
       "method": "GET",
-      "path": "/billing/customers/portal/{param}"
-    },
-    {
-      "service": "billing",
-      "method": "GET",
       "path": "/billing/customers/{param}/entitlements"
     },
     {
@@ -413,6 +408,11 @@
       "service": "billing",
       "method": "GET",
       "path": "/billing/customers/{param}/wallets"
+    },
+    {
+      "service": "billing",
+      "method": "GET",
+      "path": "/billing/customers/portal/{param}"
     },
     {
       "service": "billing",
@@ -447,17 +447,17 @@
     {
       "service": "billing",
       "method": "POST",
-      "path": "/billing/invoices/preview"
-    },
-    {
-      "service": "billing",
-      "method": "POST",
       "path": "/billing/invoices/{param}/finalize"
     },
     {
       "service": "billing",
       "method": "POST",
       "path": "/billing/invoices/{param}/void"
+    },
+    {
+      "service": "billing",
+      "method": "POST",
+      "path": "/billing/invoices/preview"
     },
     {
       "service": "billing",
@@ -652,17 +652,17 @@
     {
       "service": "governance",
       "method": "GET",
-      "path": "/policies/templates"
-    },
-    {
-      "service": "governance",
-      "method": "GET",
       "path": "/policies/{param}"
     },
     {
       "service": "governance",
       "method": "GET",
       "path": "/policies/{param}/versions"
+    },
+    {
+      "service": "governance",
+      "method": "GET",
+      "path": "/policies/templates"
     },
     {
       "service": "governance",
@@ -865,71 +865,6 @@
       "path": "/observability/logs/stream"
     },
     {
-      "service": "sandbox",
-      "method": "GET",
-      "path": "/sandbox/languages"
-    },
-    {
-      "service": "sandbox",
-      "method": "POST",
-      "path": "/sandbox/self-test"
-    },
-    {
-      "service": "sandbox",
-      "method": "POST",
-      "path": "/sandbox/submit"
-    },
-    {
-      "service": "schedules",
-      "method": "DELETE",
-      "path": "/workflows/schedules/{param}"
-    },
-    {
-      "service": "schedules",
-      "method": "GET",
-      "path": "/workflows/schedules"
-    },
-    {
-      "service": "schedules",
-      "method": "GET",
-      "path": "/workflows/schedules/{param}"
-    },
-    {
-      "service": "schedules",
-      "method": "PATCH",
-      "path": "/workflows/schedules/{param}"
-    },
-    {
-      "service": "schedules",
-      "method": "POST",
-      "path": "/workflows/cron/parse"
-    },
-    {
-      "service": "schedules",
-      "method": "POST",
-      "path": "/workflows/cron/validate"
-    },
-    {
-      "service": "schedules",
-      "method": "POST",
-      "path": "/workflows/schedules"
-    },
-    {
-      "service": "schedules",
-      "method": "POST",
-      "path": "/workflows/schedules/{param}/pause"
-    },
-    {
-      "service": "schedules",
-      "method": "POST",
-      "path": "/workflows/schedules/{param}/resume"
-    },
-    {
-      "service": "schedules",
-      "method": "POST",
-      "path": "/workflows/schedules/{param}/trigger"
-    },
-    {
       "service": "webhooks",
       "method": "DELETE",
       "path": "/webhooks/{param}"
@@ -938,6 +873,11 @@
       "service": "webhooks",
       "method": "GET",
       "path": "/webhooks"
+    },
+    {
+      "service": "webhooks",
+      "method": "GET",
+      "path": "/webhooks/{param}"
     },
     {
       "service": "webhooks",
@@ -956,18 +896,8 @@
     },
     {
       "service": "webhooks",
-      "method": "GET",
-      "path": "/webhooks/{param}"
-    },
-    {
-      "service": "webhooks",
       "method": "POST",
       "path": "/webhooks"
-    },
-    {
-      "service": "webhooks",
-      "method": "POST",
-      "path": "/webhooks/deliveries/{param}/retry"
     },
     {
       "service": "webhooks",
@@ -976,133 +906,13 @@
     },
     {
       "service": "webhooks",
+      "method": "POST",
+      "path": "/webhooks/deliveries/{param}/retry"
+    },
+    {
+      "service": "webhooks",
       "method": "PUT",
       "path": "/webhooks/{param}"
-    },
-    {
-      "service": "workflows",
-      "method": "DELETE",
-      "path": "/workflows/{param}"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/approvals"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/approvals/{param}"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/executions"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/executions/{param}"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/executions/{param}/tasks"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/runs/{param}/steps"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/tasks/{param}"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/templates"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/templates/{param}"
-    },
-    {
-      "service": "workflows",
-      "method": "GET",
-      "path": "/workflows/{param}"
-    },
-    {
-      "service": "workflows",
-      "method": "PATCH",
-      "path": "/workflows/{param}"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/approvals/{param}/approve"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/approvals/{param}/reject"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/executions"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/tasks/{param}/cancel"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/tasks/{param}/retry"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/templates"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/templates/{param}/instantiate"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/{param}/archive"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/{param}/publish"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/{param}/restore"
-    },
-    {
-      "service": "workflows",
-      "method": "POST",
-      "path": "/workflows/{param}/versions"
     }
   ],
   "typescript_reference_commit": "8d0c43f5a1416255f0eaad0d828da774eb936f73"

@@ -153,9 +153,6 @@ impl FrontalError {
     }
 }
 
-/// Backwards-compatible short name for [`FrontalError`].
-pub type Error = FrontalError;
-
 /// Structured error response returned by the API.
 #[derive(Debug, thiserror::Error)]
 #[error("{status}: {message}")]
