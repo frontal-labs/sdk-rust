@@ -55,6 +55,7 @@ pub struct ClientBuilder {
     base_url: Url,
     timeout: Duration,
     retry_policy: RetryPolicy,
+    retry_policy_is_explicit: bool,
     environment: Option<String>,
     debug: bool,
 }
@@ -68,6 +69,7 @@ impl ClientBuilder {
             base_url: Url::parse(DEFAULT_API_BASE_URL).expect("valid default API URL"),
             timeout: DEFAULT_REQUEST_TIMEOUT,
             retry_policy: RetryPolicy::default(),
+            retry_policy_is_explicit: false,
             environment: None,
             debug: false,
         }
@@ -131,6 +133,7 @@ impl ClientBuilder {
     #[must_use]
     pub fn retry_policy(mut self, retry_policy: RetryPolicy) -> Self {
         self.retry_policy = retry_policy;
+        self.retry_policy_is_explicit = true;
         self
     }
 
@@ -176,6 +179,7 @@ impl ClientBuilder {
             base_url: self.base_url,
             http,
             retry_policy: self.retry_policy,
+            retry_policy_is_explicit: self.retry_policy_is_explicit,
             environment: self.environment,
             debug: self.debug,
         })
@@ -202,6 +206,7 @@ pub struct Frontal {
     base_url: Url,
     http: reqwest::Client,
     retry_policy: RetryPolicy,
+    retry_policy_is_explicit: bool,
     environment: Option<String>,
     debug: bool,
 }
@@ -221,6 +226,15 @@ impl Frontal {
     /// Create a client from `FRONTAL_API_KEY` and optional environment settings.
     pub fn from_env() -> Result<Self> {
         ClientBuilder::from_env()?.build()
+    }
+
+    #[cfg(feature = "functions")]
+    pub(crate) fn with_default_retry_policy(&self, default_policy: RetryPolicy) -> Self {
+        let mut client = self.clone();
+        if !self.retry_policy_is_explicit {
+            client.retry_policy = default_policy;
+        }
+        client
     }
 
     /// Configured API base URL.
@@ -835,6 +849,7 @@ impl Clone for Frontal {
             base_url: self.base_url.clone(),
             http: self.http.clone(),
             retry_policy: self.retry_policy,
+            retry_policy_is_explicit: self.retry_policy_is_explicit,
             environment: self.environment.clone(),
             debug: self.debug,
         }
