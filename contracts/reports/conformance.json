@@ -2,12 +2,12 @@
   "repository": "sdk-rust",
   "language": "Rust",
   "status": "route-level-support",
-  "matched": 367,
+  "matched": 383,
   "unmatched": 0,
   "openapi_matched": 186,
-  "openapi_unmatched": 181,
+  "openapi_unmatched": 197,
   "support": "service handles validate every supported inventoried route against its service and HTTP operation; Sandbox is intentionally excluded from the Rust service surface",
-  "note": "The frozen TypeScript inventory contains 370 routes across 17 services. This Rust SDK exposes 367 routes across 16 services; Sandbox remains in the reference inventory but is intentionally excluded. The committed OpenAPI snapshots directly describe 186 active Rust routes; the remaining 181 active routes are explicitly reported as absent from those snapshots.",
+  "note": "The TypeScript endpoint inventory contains 386 routes across 18 active service namespaces; the Functions routes are sourced from the Functions package at TypeScript commit a82138eef859e6f0aed4f50f656cd0e015da8f58. This Rust SDK exposes 383 routes across 17 services; Sandbox remains intentionally excluded. The committed OpenAPI snapshots directly describe 186 active Rust routes; the remaining 197 active routes are explicitly reported as absent from those snapshots.",
   "openapi_unmatched_routes": [
     {
       "service": "agents",
@@ -913,6 +913,86 @@
       "service": "webhooks",
       "method": "PUT",
       "path": "/webhooks/{param}"
+    },
+    {
+      "service": "functions",
+      "method": "DELETE",
+      "path": "/functions/{param}"
+    },
+    {
+      "service": "functions",
+      "method": "GET",
+      "path": "/functions?cursor=&limit="
+    },
+    {
+      "service": "functions",
+      "method": "GET",
+      "path": "/functions/{param}"
+    },
+    {
+      "service": "functions",
+      "method": "GET",
+      "path": "/functions/{param}/versions?cursor=&limit="
+    },
+    {
+      "service": "functions",
+      "method": "GET",
+      "path": "/functions/{param}/versions/{param}"
+    },
+    {
+      "service": "functions",
+      "method": "GET",
+      "path": "/functions/{param}/versions/{param}/deployment/status"
+    },
+    {
+      "service": "functions",
+      "method": "GET",
+      "path": "/functions/executions?cursor=&limit=&functionId=&status="
+    },
+    {
+      "service": "functions",
+      "method": "GET",
+      "path": "/functions/executions/{param}"
+    },
+    {
+      "service": "functions",
+      "method": "GET",
+      "path": "/functions/executions/{param}/result"
+    },
+    {
+      "service": "functions",
+      "method": "PATCH",
+      "path": "/functions/{param}"
+    },
+    {
+      "service": "functions",
+      "method": "POST",
+      "path": "/functions"
+    },
+    {
+      "service": "functions",
+      "method": "POST",
+      "path": "/functions/executions/{param}/cancel"
+    },
+    {
+      "service": "functions",
+      "method": "POST",
+      "path": "/functions/invoke"
+    },
+    {
+      "service": "functions",
+      "method": "POST",
+      "path": "/functions/invoke-async"
+    },
+    {
+      "service": "functions",
+      "method": "POST",
+      "path": "/functions/{param}/versions/{param}/deploy"
+    },
+    {
+      "service": "functions",
+      "method": "POST",
+      "path": "/functions/{param}/versions/{param}/publish"
     }
   ],
   "typescript_reference_commit": "8d0c43f5a1416255f0eaad0d828da774eb936f73"
