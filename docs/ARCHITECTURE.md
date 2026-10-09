@@ -1,12 +1,12 @@
 # Rust SDK architecture
 
-The published `frontal` crate provides one `Frontal` client and one shared reqwest connection pool. Service handles are typed namespaces over that transport, so authentication, timeouts, request IDs, retries, and error mapping stay consistent.
+The published `frontal` crate provides one `Frontal` client and one shared reqwest connection pool. Service handles are typed namespaces over that transport, so authentication, timeouts, request IDs, and error mapping stay consistent. A retry policy explicitly set on the client applies to all services; service-specific defaults apply when no policy is set.
 
 ## Request flow
 
 `Application → Frontal → typed service handle → validated contract-relative path → shared HTTP transport → Frontal API`
 
-All 16 supported service handles expose operation-specific methods. Agents, AI, and Workflows also provide concrete models for their primary operations. Other operations use caller-selected Serde request and response types where the OpenAPI snapshots do not define wire fields. Before sending, every method checks that its service, verb, path template, and any required query values match `contracts/sdk-endpoints.json`.
+All 17 supported service handles expose operation-specific methods. Agents, AI, Functions, and Workflows also provide concrete models for their primary operations. Other operations use caller-selected Serde request and response types where the OpenAPI snapshots do not define wire fields. Before sending, every method checks that its service, verb, path template, and any required query values match `contracts/sdk-endpoints.json`.
 
 ## Configuration and transport
 
@@ -20,8 +20,8 @@ The transport sends bearer authentication and an `x-request-id` for each logical
 
 ## Services and features
 
-The default `full` feature enables `ai`, `agents`, `audit`, `auth`, `billing`, `blob`, `connectors`, `data`, `governance`, `lineage`, `observability`, `ontology`, `pipelines`, `schedules`, `webhooks`, `workflows`, and `stream`. Turn off default features to compile only the required service modules.
+The default `full` feature enables `ai`, `agents`, `audit`, `auth`, `billing`, `blob`, `connectors`, `data`, `functions`, `governance`, `lineage`, `observability`, `ontology`, `pipelines`, `schedules`, `webhooks`, `workflows`, and `stream`. Turn off default features to compile only the required service modules.
 
 ## Contracts
 
-`contracts/sdk-endpoints.json` retains the frozen TypeScript inventory of 370 routes across 17 services. The SDK exposes the 16 services listed in `SDK_SERVICES`; Sandbox is intentionally excluded. The committed OpenAPI snapshots directly describe 186 routes; the active SDK handles cover 367 routes, and 181 active routes are absent from those snapshots. `cargo xtask contract` checks the supported service set, route methods, OpenAPI coverage, and the exact list of active inventory routes absent from the snapshots, so route drift fails CI. `python3 scripts/check_contracts.py` verifies the frozen inventory and snapshot hashes. Neither command rewrites the contracts.
+`contracts/sdk-endpoints.json` records 386 routes across 18 active service namespaces, including the Functions routes from the TypeScript package. The SDK exposes the 17 non-Sandbox services listed in `SDK_SERVICES`; Sandbox is intentionally excluded. The committed OpenAPI snapshots directly describe 186 routes; the active SDK handles cover 383 routes, and 197 active routes are absent from those snapshots. `cargo xtask contract` checks the supported service set, route methods, OpenAPI coverage, and the exact list of active inventory routes absent from the snapshots, so route drift fails CI. `python3 scripts/check_contracts.py` verifies the frozen inventory and snapshot hashes. Neither command rewrites the contracts.

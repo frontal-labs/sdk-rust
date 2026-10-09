@@ -28,7 +28,7 @@ println!("{agents:#?}");
 # }
 ```
 
-All 16 supported service handles expose operation-specific methods and validate each route against its service contract before sending. Methods use caller-selected Serde request and response types when the OpenAPI snapshots do not define the wire fields. The `agents`, `ai`, and `workflows` services also include concrete models for their primary operations. Use `post_idempotent` for a JSON POST the server supports retrying with an `Idempotency-Key` header.
+All 17 supported service handles expose operation-specific methods and validate each route against its service contract before sending. Methods use caller-selected Serde request and response types when the OpenAPI snapshots do not define the wire fields. The `agents`, `ai`, `functions`, and `workflows` services also include concrete models for their primary operations. Use `post_idempotent` for a JSON POST the server supports retrying with an `Idempotency-Key` header.
 
 ```rust,no_run
 # async fn configure() -> frontal::Result<()> {
@@ -43,11 +43,42 @@ let client = Frontal::builder("frt_...")
 # }
 ```
 
-The `default` feature enables all 16 supported service namespaces. Applications can disable default features and enable only the services they use, such as `frontal = { version = "1", default-features = false, features = ["agents"] }`. SSE support is enabled by the `stream` feature.
+The `default` feature enables all 17 supported service namespaces. Applications can disable default features and enable only the services they use, such as `frontal = { version = "1", default-features = false, features = ["functions"] }`. SSE support is enabled by the `stream` feature.
 
 ## Configuration
 
 `Frontal::from_env()` reads `FRONTAL_API_KEY`, `FRONTAL_API_URL`, `FRONTAL_TIMEOUT` (milliseconds), `FRONTAL_ENV`, and `FRONTAL_DEBUG`. The API URL defaults to `https://api.frontal.dev/v1`; the request timeout defaults to 30 seconds. Rust does not load `.env` files automatically. Use `Frontal::builder(api_key)` to set the URL, timeout, retry policy, environment label, or debug flag directly.
+
+## Functions API
+
+The Functions service uses the shared `Frontal` transport and inherits its API key, base URL, and timeout. An explicitly configured retry policy applies to every service; otherwise Functions defaults to three retries and other services keep the shared two-retry default. The API URL defaults to `https://api.frontal.dev/v1`, and the timeout defaults to 30 seconds. Function definitions, pagination, versions, executions, invocation payloads, and responses have concrete types under `frontal::models::functions`.
+
+```rust,no_run
+# async fn functions_example() -> frontal::Result<()> {
+use frontal::{models::functions::FunctionListOptions, Frontal, RetryPolicy};
+use std::time::Duration;
+
+let client = Frontal::builder("frt_...")
+    .base_url("https://api.frontal.dev/v1")?
+    .timeout(Duration::from_secs(30))
+    .retry_policy(RetryPolicy {
+        max_retries: 3,
+        ..RetryPolicy::default()
+    })
+    .build()?;
+let page = client
+    .functions()
+    .list_functions(&FunctionListOptions {
+        cursor: None,
+        limit: Some(20),
+    })
+    .await?;
+println!("{page:#?}");
+# Ok(())
+# }
+```
+
+Use `FunctionInvocationInput` with `FunctionJsonObject` for invocation input; the SDK retains arbitrary nested object keys in inputs, results, and JSON Schema values.
 
 ## Development
 
