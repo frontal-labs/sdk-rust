@@ -8,6 +8,7 @@ use std::{
 use serde::Deserialize;
 
 const TYPESCRIPT_REFERENCE_COMMIT: &str = "8d0c43f5a1416255f0eaad0d828da774eb936f73";
+const FUNCTIONS_TYPESCRIPT_REFERENCE_COMMIT: &str = "a82138eef859e6f0aed4f50f656cd0e015da8f58";
 
 #[derive(Debug, Deserialize, Eq, PartialEq)]
 struct Endpoint {
@@ -45,6 +46,15 @@ fn main() {
     }
 }
 
+fn facade_binds_service(facade: &str, service: &str) -> bool {
+    let signature = format!("pub fn {service}(&self)");
+    let Some((_, accessor)) = facade.split_once(&signature) else {
+        return false;
+    };
+    let accessor = accessor.split("\n    #[cfg").next().unwrap_or(accessor);
+    accessor.contains("ServiceClient::new") && accessor.contains(&format!("\"{service}\""))
+}
+
 fn check_contract() -> Result<(), String> {
     let root = project_root();
     let inventory_path = root.join("contracts/sdk-endpoints.json");
@@ -53,7 +63,7 @@ fn check_contract() -> Result<(), String> {
         read_json(&root.join("contracts/references/typescript-sdk-endpoints.json"))?;
     if inventory != typescript_reference {
         return Err(format!(
-            "{} differs from the frozen TypeScript endpoint inventory at {TYPESCRIPT_REFERENCE_COMMIT}",
+            "{} differs from the frozen TypeScript endpoint inventory at {TYPESCRIPT_REFERENCE_COMMIT} with Functions routes sourced from {FUNCTIONS_TYPESCRIPT_REFERENCE_COMMIT}",
             inventory_path.display()
         ));
     }
@@ -128,10 +138,7 @@ fn check_contract() -> Result<(), String> {
         if !resources.contains(&format!("pub mod {service};")) {
             return Err(format!("{service} module is not exported from resources"));
         }
-        if !facade.contains(&format!("pub fn {service}(&self)")) {
-            return Err(format!("Frontal has no {service}() service accessor"));
-        }
-        if !facade.contains(&format!("ServiceClient::new(self.clone(), \"{service}\")")) {
+        if !facade_binds_service(&facade, &service) {
             return Err(format!(
                 "Frontal::{service}() is not bound to the {service} route inventory"
             ));
