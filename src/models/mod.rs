@@ -29,8 +29,6 @@ pub mod observability;
 pub mod ontology;
 #[cfg(feature = "pipelines")]
 pub mod pipelines;
-#[cfg(feature = "sandbox")]
-pub mod sandbox;
 #[cfg(feature = "schedules")]
 pub mod schedules;
 #[cfg(feature = "webhooks")]

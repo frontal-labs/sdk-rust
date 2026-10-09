@@ -7,7 +7,9 @@ alwaysApply: true
 
 - Read `AGENTS.md` for repository layout, conventions, and canonical commands. `CLAUDE.md` imports it for Claude Code compatibility.
 - Treat `contracts/sdk-endpoints.json` and committed OpenAPI snapshots as authoritative for endpoint paths and wire shapes. Do not invent public operations or fields.
-- Preserve established public API and compatibility unless the requested change explicitly requires otherwise.
+- This SDK is unreleased. Keep one canonical public API surface under the `frontal` crate and the `/v1` API base URL; do not add parallel v1/v2 modules, aliases, or migration shims.
+- Prefer contract-derived concrete request and response types. Use flexible Serde types only where the contract is intentionally open or does not define a shape; never invent fields to appear more typed.
 - Keep credentials, tokens, and customer data out of code, logs, fixtures, and examples.
 - Follow relevant repository skills in `skills/` when changing SDK behavior.
-- Inspect the existing diff before editing. Run only the checks relevant to the change and report exactly what was run.
+- Remove unused code and dependencies when safe; do not suppress dead-code warnings to hide unreachable APIs.
+- Inspect the existing diff before editing. Run `cargo fmt --all -- --check`, `cargo build --workspace`, and `cargo clippy --all-targets --all-features -- -D warnings` after Rust changes, plus relevant tests and `cargo xtask contract` for API changes.

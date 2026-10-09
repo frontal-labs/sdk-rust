@@ -14,3 +14,4 @@ node_modules/
 **/*.rs.bk
 /coverage/
 scripts/__pycache__/
+scripts/tests/__pycache__/

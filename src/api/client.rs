@@ -951,9 +951,6 @@ fn ensure_trailing_slash(mut url: Url) -> Url {
     url
 }
 
-/// Compatibility name for applications migrating from the initial scaffold.
-pub type Client = Frontal;
-
 #[cfg(test)]
 mod tests {
     use std::time::{Duration, UNIX_EPOCH};

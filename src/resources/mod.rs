@@ -8,7 +8,7 @@ use std::{collections::BTreeMap, marker::PhantomData, sync::OnceLock, time::Dura
 
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
-use crate::{api::Client, endpoints::EndpointPath, errors::FrontalError, global::Result};
+use crate::{api::Frontal, endpoints::EndpointPath, errors::FrontalError, global::Result};
 
 #[derive(Debug, Deserialize)]
 struct ContractEndpoint {
@@ -91,13 +91,31 @@ fn required_query_matches(path: &str, query: &[(&str, &str)]) -> bool {
 /// Shared implementation behind each service-specific handle.
 #[derive(Clone, Debug)]
 pub struct ServiceClient<S> {
-    client: Client,
+    client: Frontal,
     service_name: &'static str,
     service: PhantomData<fn() -> S>,
 }
 
 impl<S> ServiceClient<S> {
-    pub(crate) fn new(client: Client, service_name: &'static str) -> Self {
+    #[cfg(any(
+        feature = "agents",
+        feature = "ai",
+        feature = "audit",
+        feature = "auth",
+        feature = "billing",
+        feature = "blob",
+        feature = "connectors",
+        feature = "data",
+        feature = "governance",
+        feature = "lineage",
+        feature = "observability",
+        feature = "ontology",
+        feature = "pipelines",
+        feature = "schedules",
+        feature = "webhooks",
+        feature = "workflows"
+    ))]
+    pub(crate) fn new(client: Frontal, service_name: &'static str) -> Self {
         Self {
             client,
             service_name,
@@ -393,8 +411,6 @@ pub mod observability;
 pub mod ontology;
 #[cfg(feature = "pipelines")]
 pub mod pipelines;
-#[cfg(feature = "sandbox")]
-pub mod sandbox;
 #[cfg(feature = "schedules")]
 pub mod schedules;
 #[cfg(feature = "webhooks")]
@@ -417,7 +433,6 @@ pub const SDK_SERVICES: &[&str] = &[
     "observability",
     "ontology",
     "pipelines",
-    "sandbox",
     "schedules",
     "webhooks",
     "workflows",
