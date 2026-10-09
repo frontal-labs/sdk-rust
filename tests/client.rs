@@ -1,3 +1,4 @@
+use std::collections::BTreeMap;
 use std::sync::{
     atomic::{AtomicUsize, Ordering},
     Arc,
@@ -5,6 +6,7 @@ use std::sync::{
 use std::time::Duration;
 
 use frontal::models::ai::{ChatCompletionRequest, ChatCompletionResponse, ChatMessage};
+use frontal::models::workflows::{CreateWorkflowRequest, WorkflowSpec, WorkflowStatus};
 use frontal::{Frontal, FrontalError, RetryPolicy};
 use futures_util::StreamExt;
 use serde::{Deserialize, Serialize};
@@ -159,7 +161,6 @@ async fn remaining_service_methods_use_their_contract_routes() {
         ("GET", "/v1/observability/dashboards"),
         ("POST", "/v1/ontology/engine/ontologies/infer-classes"),
         ("GET", "/v1/data/pipelines/capabilities"),
-        ("GET", "/v1/sandbox/languages"),
         ("POST", "/v1/workflows/cron/validate"),
         ("POST", "/v1/webhooks/hook1/rotate-secret"),
     ] {
@@ -206,13 +207,91 @@ async fn remaining_service_methods_use_their_contract_routes() {
     let _: serde_json::Value = client.observability().list_dashboards().await.unwrap();
     let _: serde_json::Value = client.ontology().infer_classes(&json!({})).await.unwrap();
     let _: serde_json::Value = client.pipelines().pipeline_capabilities().await.unwrap();
-    let _: serde_json::Value = client.sandbox().languages().await.unwrap();
     let _: serde_json::Value = client
         .schedules()
         .validate_cron(&json!({"cronExpression":"0 * * * *"}))
         .await
         .unwrap();
     let _: serde_json::Value = client.webhooks().rotate_secret("hook1").await.unwrap();
+}
+
+#[tokio::test]
+async fn workflow_operations_use_contract_typed_models_and_wire_names() {
+    let server = MockServer::start().await;
+    Mock::given(method("POST"))
+        .and(path("/v1/workflows"))
+        .and(body_json(json!({
+            "name": "Example",
+            "slug": "example",
+            "description": "typed workflow"
+        })))
+        .respond_with(ResponseTemplate::new(201).set_body_json(json!({
+            "workflow": {
+                "workflowId": "wf-1",
+                "tenantId": "tenant-1",
+                "name": "Example",
+                "slug": "example",
+                "description": "typed workflow",
+                "status": "DRAFT",
+                "latestVersion": 0,
+                "createdBy": "user-1",
+                "updatedBy": "user-1",
+                "createdAt": "2026-10-09T09:00:00Z",
+                "updatedAt": "2026-10-09T09:00:00Z"
+            }
+        })))
+        .expect(1)
+        .mount(&server)
+        .await;
+
+    Mock::given(method("POST"))
+        .and(path("/v1/workflows/executions"))
+        .and(body_json(json!({
+            "workflow_id": "wf-1",
+            "input": {"customer_id": "c-1"}
+        })))
+        .respond_with(ResponseTemplate::new(201).set_body_json(json!({
+            "execution": {
+                "execution_id": "exec-1",
+                "tenant_id": "tenant-1",
+                "workflow_id": "wf-1",
+                "version_id": "version-1",
+                "status": "RUNNING",
+                "input": {"customer_id": "c-1"},
+                "started_by": "user-1",
+                "created_at": "2026-10-09T09:01:00Z"
+            },
+            "state": {
+                "ready": ["step-1"],
+                "completed": [],
+                "failed": [],
+                "total_steps": 1
+            }
+        })))
+        .expect(1)
+        .mount(&server)
+        .await;
+
+    let workflows = client_for(&server).workflows();
+    let workflow = workflows
+        .create_workflow_record(&CreateWorkflowRequest {
+            name: "Example".to_owned(),
+            slug: "example".to_owned(),
+            description: Some("typed workflow".to_owned()),
+            actor: None,
+        })
+        .await
+        .expect("decode workflow envelope");
+    assert_eq!(workflow.workflow_id, "wf-1");
+    assert_eq!(workflow.status, WorkflowStatus::Draft);
+
+    let input = WorkflowSpec(BTreeMap::from([("customer_id".to_owned(), json!("c-1"))]));
+    let execution = workflows
+        .create_execution("wf-1", &input)
+        .await
+        .expect("decode start execution response");
+    assert_eq!(execution.execution.execution_id, "exec-1");
+    assert_eq!(execution.state.ready, ["step-1"]);
 }
 
 #[tokio::test]
