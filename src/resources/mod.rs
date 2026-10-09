@@ -84,7 +84,7 @@ fn required_query_matches(path: &str, query: &[(&str, &str)]) -> bool {
 
     required.split('&').all(|pair| {
         let (key, value) = pair.split_once('=').unwrap_or((pair, ""));
-        query.contains(&(key, value))
+        value.is_empty() || query.contains(&(key, value))
     })
 }
 
@@ -106,6 +106,7 @@ impl<S> ServiceClient<S> {
         feature = "blob",
         feature = "connectors",
         feature = "data",
+        feature = "functions",
         feature = "governance",
         feature = "lineage",
         feature = "observability",
@@ -401,6 +402,8 @@ pub mod blob;
 pub mod connectors;
 #[cfg(feature = "data")]
 pub mod data;
+#[cfg(feature = "functions")]
+pub mod functions;
 #[cfg(feature = "governance")]
 pub mod governance;
 #[cfg(feature = "lineage")]
@@ -428,6 +431,7 @@ pub const SDK_SERVICES: &[&str] = &[
     "blob",
     "connectors",
     "data",
+    "functions",
     "governance",
     "lineage",
     "observability",

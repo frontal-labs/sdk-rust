@@ -19,6 +19,8 @@ pub mod blob;
 pub mod connectors;
 #[cfg(feature = "data")]
 pub mod data;
+#[cfg(feature = "functions")]
+pub mod functions;
 #[cfg(feature = "governance")]
 pub mod governance;
 #[cfg(feature = "lineage")]

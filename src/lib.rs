@@ -73,6 +73,20 @@ impl Frontal {
         resources::ServiceClient::new(self.clone(), "data")
     }
 
+    #[cfg(feature = "functions")]
+    /// Access the Functions service using this client's shared transport.
+    #[must_use]
+    pub fn functions(&self) -> resources::functions::Functions {
+        let default_retry_policy = RetryPolicy {
+            max_retries: 3,
+            ..RetryPolicy::default()
+        };
+        resources::ServiceClient::new(
+            self.with_default_retry_policy(default_retry_policy),
+            "functions",
+        )
+    }
+
     #[cfg(feature = "governance")]
     /// Access the Governance service using this client's shared transport.
     #[must_use]

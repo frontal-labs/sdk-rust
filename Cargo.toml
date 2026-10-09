@@ -24,7 +24,7 @@ resolver = "2"
 [features]
 default = ["full"]
 full = [
-    "ai", "agents", "audit", "auth", "billing", "blob", "connectors", "data",
+    "ai", "agents", "audit", "auth", "billing", "blob", "connectors", "data", "functions",
     "governance", "lineage", "observability", "ontology", "pipelines",
     "schedules", "webhooks", "workflows", "stream",
 ]
@@ -36,6 +36,7 @@ billing = []
 blob = []
 connectors = []
 data = []
+functions = []
 governance = []
 lineage = []
 observability = []
@@ -58,6 +59,11 @@ required-features = ["full"]
 name = "list_agents"
 path = "examples/list_agents.rs"
 required-features = ["agents"]
+
+[[example]]
+name = "list_functions"
+path = "examples/list_functions.rs"
+required-features = ["functions"]
 
 [dependencies]
 eventsource-stream = { version = "0.2", optional = true }
