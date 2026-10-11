@@ -9,7 +9,7 @@ In **Settings → Rules → Rulesets**, create an active branch ruleset targetin
 - Require a pull request before merging, with at least one approval.
 - Require review from Code Owners and dismiss stale approvals after new commits.
 - Require all review conversations to be resolved.
-- Require these status checks: `CI / quality`, `CI / msrv`, `CI / platform (ubuntu-latest)`, `CI / platform (macos-latest)`, `CI / platform (windows-latest)`, `CI / commitlint`, and `CI / semver`. Also require `CodeQL / analyze` and `Dependency review / review` when the repository is public or private-repository Code Security is enabled with `CODE_SECURITY_ENABLED=true`; both jobs skip otherwise.
+- Require these status checks: `CI / quality`, `CI / msrv`, `CI / platform (ubuntu-latest)`, `CI / platform (macos-latest)`, `CI / platform (windows-latest)`, `CI / commitlint`, and `CI / semver`. Also require `Conventional Commits / title` for pull request titles, and `CodeQL / analyze` and `Dependency review / review` when the repository is public or private-repository Code Security is enabled with `CODE_SECURITY_ENABLED=true`; both jobs skip otherwise.
 - Require branches to be up to date before merging.
 - Require linear history; block force pushes and branch deletion.
 - Do not allow bypasses except for a documented break-glass administrator.
