@@ -51,9 +51,14 @@ Each service handle exposes HTTP verb methods backed by the shared transport: `g
 # async fn example(client: &Frontal) -> frontal::Result<()> {
 #[derive(serde::Deserialize)]
 struct Page {
-    items: Vec<serde_json::Value>,
+    data: Vec<serde_json::Value>,
+    #[serde(rename = "nextCursor", default)]
+    next_cursor: Option<String>,
 }
-let page: Page = client.ontology().get("ontology/entities?limit=20").await?;
+let page: Page = client
+    .ontology()
+    .get_with_query("ontology/objects/objects", &[("limit", "20")])
+    .await?;
 # let _ = page;
 # Ok(())
 # }
@@ -63,9 +68,26 @@ All 17 supported service handles validate every route against its service contra
 
 Query parameters use the API's documented names; for example, pagination methods pass `cursor` and `limit`. SSE streaming returns `ServerSentEvent` values from the `stream` feature. Raw response-body methods return bytes, and multipart uploads use `reqwest::multipart::Form`.
 
-## Shared transport behavior
+## Pagination, polling, and streaming
 
-Pagination helpers are not exposed on `Frontal`; collection responses return the documented page envelope, and the caller selects the next cursor. Configure the timeout on the client, and remember that a polling deadline cannot interrupt an in-flight request:
+`Frontal::paginate` walks every cursor page of a response shaped as `{ data, next_cursor }` and returns the collected items:
+
+```rust,ignore
+# use frontal::Frontal;
+# async fn example(client: &Frontal) -> frontal::Result<()> {
+#[derive(serde::Deserialize)]
+struct Row {
+    id: String,
+}
+let rows: Vec<Row> = client
+    .paginate("ontology/objects/objects", Some(100))
+    .await?;
+# let _ = rows;
+# Ok(())
+# }
+```
+
+It fails with `FrontalError::Pagination` if the server repeats a cursor. `Frontal::poll_until` polls a JSON resource until a readiness closure returns true or the attempt limit is reached. With the `stream` feature, `Frontal::events` and service streaming methods such as `agents().watch_run` decode server-sent events as `ServerSentEvent` streams. Configure the timeout on the client, and remember that a polling deadline cannot interrupt an in-flight request:
 
 ```rust,ignore
 # use frontal::{Frontal, RetryPolicy};
