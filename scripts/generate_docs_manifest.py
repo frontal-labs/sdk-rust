@@ -4,12 +4,22 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+excluded = (
+    ".context",
+    ".git",
+    ".venv",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    "node_modules",
+    "target",
+    "build",
+    "dist",
+)
 paths = sorted(
     p
     for p in ROOT.rglob("*.md")
-    if ".git" not in p.parts
-    and "target" not in p.parts
-    and "build" not in p.parts
+    if not any(part in excluded for part in p.parts)
     and p.name != "PLAN.md"
 )
 documents = [{"path": p.relative_to(ROOT).as_posix(), "title": p.stem.replace("_", " ")} for p in paths]
