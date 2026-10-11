@@ -1,8 +1,10 @@
 pre-commit:
+  parallel: true
   commands:
     rustfmt:
       run: cargo fmt --all -- --check
+
 commit-msg:
   commands:
     commitlint:
-      run: npx --no-install commitlint --edit {1}
+      run: bun commitlint --config commitlint.config.cjs --edit {1}

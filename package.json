@@ -1,5 +1,5 @@
 {
-  "name": "frontal-sdk-rust-hooks",
+  "name": "frontal-sdk-rust-devtools",
   "private": true,
   "scripts": {
     "prepare": "lefthook install"
