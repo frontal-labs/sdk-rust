@@ -1,6 +1,6 @@
 # Frontal Rust SDK guide
 
-The shared SDK client provides async JSON requests, bearer authentication, configurable API URLs and timeouts, retry-safe backoff, pagination, polling, streaming, and structured API errors. Each supported service handle exposes named methods for its operations over the committed route inventory. Methods use caller-selected Serde request and response types where the OpenAPI snapshots do not define wire fields; the agents, AI, and Workflows services also provide concrete models for their primary operations.
+The shared SDK client provides async JSON requests, bearer authentication, configurable API URLs and timeouts, retry-safe backoff, pagination, polling, streaming, and structured API errors. Each supported service handle exposes named methods for its operations over the committed route inventory. Methods use caller-selected Serde request and response types where the OpenAPI snapshots do not define wire fields; the agents, AI, Functions, and Workflows services also provide concrete models for their primary operations.
 
 ## Toolchain
 

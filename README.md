@@ -34,7 +34,7 @@ All 17 supported service handles expose operation-specific methods and validate 
 # async fn configure() -> frontal::Result<()> {
 # use frontal::{Frontal, RetryPolicy};
 let client = Frontal::builder("frt_...")
-    .base_url("https://api.frontal.dev/v1")?
+    .base_url("https://api.frontal.dev/v1/")?
     .timeout(std::time::Duration::from_secs(10))
     .retry_policy(RetryPolicy::default())
     .build()?;
@@ -47,11 +47,11 @@ The `default` feature enables all 17 supported service namespaces. Applications 
 
 ## Configuration
 
-`Frontal::from_env()` reads `FRONTAL_API_KEY`, `FRONTAL_API_URL`, `FRONTAL_TIMEOUT` (milliseconds), `FRONTAL_ENV`, and `FRONTAL_DEBUG`. The API URL defaults to `https://api.frontal.dev/v1`; the request timeout defaults to 30 seconds. Rust does not load `.env` files automatically. Use `Frontal::builder(api_key)` to set the URL, timeout, retry policy, environment label, or debug flag directly.
+`Frontal::from_env()` reads `FRONTAL_API_KEY`, `FRONTAL_API_URL`, `FRONTAL_TIMEOUT` (milliseconds), `FRONTAL_ENV`, and `FRONTAL_DEBUG`. The API URL defaults to `https://api.frontal.dev/v1/`; the request timeout defaults to 30 seconds. Rust does not load `.env` files automatically. Use `Frontal::builder(api_key)` to set the URL, timeout, retry policy, environment label, or debug flag directly.
 
 ## Functions API
 
-The Functions service uses the shared `Frontal` transport and inherits its API key, base URL, and timeout. An explicitly configured retry policy applies to every service; otherwise Functions defaults to three retries and other services keep the shared two-retry default. The API URL defaults to `https://api.frontal.dev/v1`, and the timeout defaults to 30 seconds. Function definitions, pagination, versions, executions, invocation payloads, and responses have concrete types under `frontal::models::functions`.
+The Functions service uses the shared `Frontal` transport and inherits its API key, base URL, and timeout. An explicitly configured retry policy applies to every service; otherwise Functions defaults to three retries and other services keep the shared two-retry default. The API URL defaults to `https://api.frontal.dev/v1/`, and the timeout defaults to 30 seconds. Function definitions, pagination, versions, executions, invocation payloads, and responses have concrete types under `frontal::models::functions`.
 
 ```rust,no_run
 # async fn functions_example() -> frontal::Result<()> {
@@ -59,7 +59,7 @@ use frontal::{models::functions::FunctionListOptions, Frontal, RetryPolicy};
 use std::time::Duration;
 
 let client = Frontal::builder("frt_...")
-    .base_url("https://api.frontal.dev/v1")?
+    .base_url("https://api.frontal.dev/v1/")?
     .timeout(Duration::from_secs(30))
     .retry_policy(RetryPolicy {
         max_retries: 3,

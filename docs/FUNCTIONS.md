@@ -1,6 +1,6 @@
 # Functions API
 
-The crate exposes the Functions service as `client.functions()`. It uses the shared `reqwest` transport and inherits its API key, base URL, and timeout: the API URL defaults to `https://api.frontal.dev/v1`, and the timeout defaults to 30 seconds. The API key is sent as Bearer authentication. An explicitly configured `RetryPolicy` applies to every service; otherwise Functions defaults to three retries and other services keep the shared two-retry default.
+The crate exposes the Functions service as `client.functions()`. It uses the shared `reqwest` transport and inherits its API key, base URL, and timeout: the API URL defaults to `https://api.frontal.dev/v1/`, and the timeout defaults to 30 seconds. The API key is sent as Bearer authentication. An explicitly configured `RetryPolicy` applies to every service; otherwise Functions defaults to three retries and other services keep the shared two-retry default.
 
 ```rust,ignore
 # use frontal::{models::functions::FunctionListOptions, Frontal};
