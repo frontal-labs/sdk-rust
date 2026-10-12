@@ -78,6 +78,8 @@ println!("{page:#?}");
 # }
 ```
 
+The Functions service is covered by [`docs/FUNCTIONS.md`](./docs/FUNCTIONS.md) for an end-to-end guide.
+
 Use `FunctionInvocationInput` with `FunctionJsonObject` for invocation input; the SDK retains arbitrary nested object keys in inputs, results, and JSON Schema values.
 
 ## Development
