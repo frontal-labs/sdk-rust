@@ -34,7 +34,7 @@ let response = client.ai().chat_completions(&request).await?;
 
 ## Agents and workflows
 
-Agents expose `list_agents`, `create_agent`, `get_agent`, `update_agent`, `delete_agent`, `rollback_agent`, run operations (`create_run`, `get_run`, `conversation`), and the generic `versions` and `runs` methods that take a caller-selected response type. `watch_run` streams server-sent events; it requires the `stream` feature.
+Agents expose `list_agents`, `create_agent`, `health`, `get_agent`, `update_agent`, `delete_agent`, `rollback_agent`, run operations (`create_run`, `get_run`, `conversation`), and the generic `versions` and `runs` methods that take a caller-selected response type. `watch_run` streams server-sent events; it requires the `stream` feature.
 
 Workflows expose definition operations (`list_workflows`, `create_workflow_record`, `add_workflow_version`, `get_workflow`, `update_workflow`, `delete_workflow`, `publish_workflow`, `archive_workflow`, `restore_workflow`), execution operations (`list_executions`, `create_execution`, `get_execution`, `execution_tasks`, `run_steps`), task operations (`get_task`, `retry_task`, `cancel_task`), approvals (`list_approvals`, `get_approval`, `approve`, `reject`), and templates (`list_templates`, `get_template`, `create_template`, `instantiate_template`).
 
@@ -44,7 +44,7 @@ See the [Functions API guide](FUNCTIONS.md) for definitions, invocations, versio
 
 ## Endpoint methods
 
-Each service handle exposes HTTP verb methods backed by the shared transport: `get`, `get_with_query`, `post`, `post_idempotent`, `post_with_query`, `put`, `patch`, `delete`, and the raw `post_bytes` and `post_form` variants. Where the contract does not define the wire fields, methods and response decoding use caller-selected Serde types:
+Each service handle exposes HTTP verb methods backed by the shared transport. Read methods include `get`, `get_with_query`, `get_with_bearer_auth`, and `get_bytes`. Write methods include `post`, `post_with_query`, `post_idempotent`, `post_idempotent_with_query`, `post_empty`, `post_empty_idempotent`, `post_bytes`, `post_form`, and `post_form_empty`. Update methods include `put` and `patch`. Delete methods include `delete`, `delete_with_query`, `delete_with_body`, and `delete_empty`. Helper methods include `paginate`, `poll_until`, and `events` (the latter requires the `stream` feature). Where the contract does not define the wire fields, methods and response decoding use caller-selected Serde types:
 
 ```rust,ignore
 # use frontal::Frontal;
@@ -94,7 +94,7 @@ It fails with `FrontalError::Pagination` if the server repeats a cursor. `Fronta
 # use std::time::Duration;
 # async fn example() -> frontal::Result<()> {
 let client = Frontal::builder("frt_...")
-    .base_url("https://api.frontal.dev/v1")?
+    .base_url("https://api.frontal.dev/v1/")?
     .timeout(Duration::from_secs(10))
     .retry_policy(RetryPolicy::default())
     .build()?;

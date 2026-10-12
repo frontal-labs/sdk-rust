@@ -10,7 +10,7 @@ All 17 supported service handles expose operation-specific methods. Agents, AI, 
 
 ## Configuration and transport
 
-`Frontal::builder(api_key)` configures an HTTP(S) base URL, request timeout, retry policy, environment label, and debug flag. `Frontal::from_env()` reads `FRONTAL_API_KEY`, `FRONTAL_API_URL`, `FRONTAL_TIMEOUT` (milliseconds), `FRONTAL_ENV`, and `FRONTAL_DEBUG`. The default base URL is `https://api.frontal.dev/v1`, and the default timeout is 30 seconds. Rust does not load `.env` files.
+`Frontal::builder(api_key)` configures an HTTP(S) base URL, request timeout, retry policy, environment label, and debug flag. `Frontal::from_env()` reads `FRONTAL_API_KEY`, `FRONTAL_API_URL`, `FRONTAL_TIMEOUT` (milliseconds), `FRONTAL_ENV`, and `FRONTAL_DEBUG`. The default base URL is `https://api.frontal.dev/v1/`, and the default timeout is 30 seconds. Rust does not load `.env` files.
 
 The transport sends bearer authentication and an `x-request-id` for each logical request. GET, PUT, and DELETE may retry on connection/timeouts and transient HTTP statuses. POST is retried only through the JSON idempotency-key methods, which reuse the same key for every attempt; ordinary POST and PATCH calls are not retried automatically. `Retry-After` is honored up to the configured maximum delay. Multipart and streaming requests share auth and response error mapping.
 
